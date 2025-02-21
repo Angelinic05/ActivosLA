@@ -128,7 +128,7 @@ window.onload = function() {
 
 var modal = document.getElementById("myModal");
 var btn = document.querySelector(".floating-button");
-var span = document.getElementsByClassName("close")[0];
+var close = document.getElementById("closex");
 
 btn.onclick = function() {
     modal.style.display = "block";
@@ -141,7 +141,7 @@ btn.onclick = function() {
     document.getElementById("sistemaOperativo").value = ""; // Limpiar el sistema operativo
 }
 
-span.onclick = function() {
+close.onclick = function() {
     modal.style.display = "none";
     // Limpiar los campos del formulario al cerrar el modal
     document.getElementById("computerId").value = ""; // Limpiar el ID al cerrar el modal

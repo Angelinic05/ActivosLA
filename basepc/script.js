@@ -110,7 +110,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebas
 
         var modal = document.getElementById("myModal");
         var btn = document.querySelector(".floating-button");
-        var span = document.getElementsByClassName("close")[0];
+        var close = document.getElementById("closex");
 
         btn.onclick = function() {
             modal.style.display = "block";
@@ -120,7 +120,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebas
             document.getElementById("base").value = ""; // Limpiar la base PC
         }
 
-        span.onclick = function() {
+        close.onclick = function() {
             modal.style.display = "none";
             // Limpiar los campos del formulario al cerrar el modal
             document.getElementById("baseId").value = ""; // Limpiar el ID al cerrar el modal

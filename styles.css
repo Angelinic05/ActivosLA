@@ -331,7 +331,10 @@ table {
   position: relative;
   box-shadow: 0 7px 12px rgba(0, 0, 0, 0.2); /* Sombra */
 }
-
+th{
+  
+  align-items: center;
+}
 th, td {
   border: 1px solid #ddd; /* Borde de las celdas */
   padding: 8px; /* Espaciado interno */
@@ -538,9 +541,6 @@ button:hover {
       padding: 2px; /* Espaciado interno */
   }
 
-
-
-
 }
 
 
@@ -549,9 +549,6 @@ button:hover {
     .sidebar.close .nav-links li .sub-menu {
       display: none;
     }
-
-
-
 
   
       table{
@@ -570,4 +567,12 @@ button:hover {
       display: flex;
       gap: 1px;
     }
+
+    .search-inline {
+
+      width: 50%;
+    }
+
+
+
 }

@@ -110,7 +110,7 @@ window.onload = function() {
 
 var modal = document.getElementById("myModal");
 var btn = document.querySelector(".floating-button");
-var span = document.getElementsByClassName("close")[0];
+var close = document.getElementById("closex");
 
 btn.onclick = function() {
     modal.style.display = "block";
@@ -120,7 +120,7 @@ btn.onclick = function() {
     document.getElementById("posapies").value = ""; // Limpiar el posapies
 }
 
-span.onclick = function() {
+close.onclick = function() {
     modal.style.display = "none";
     // Limpiar los campos del formulario al cerrar el modal
     document.getElementById("posapiesId").value = ""; // Limpiar el ID al cerrar el modal
