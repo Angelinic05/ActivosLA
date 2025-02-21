@@ -60,7 +60,9 @@
 
                 if (userData && userData.role) {
                     // Redirigir según el rol
-                    if (userData.role === "admin") {
+                    if (userData.role === "admin"
+                        
+                    ) {
                         console.log('Redirigiendo a la página de administradores');
                         window.location.href = 'https://angelinic05.github.io/ActivosLA/colaborador/Colaboradores.html'; // URL para administradores
                     } else if (userData.role === "viewer") {
