@@ -30,12 +30,14 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebas
                         <td>${data.modelo}</td>
                         <td>${data.serial}</td>
                         <td>
-                            <a href="#" class="action-icon" title="Editar" onclick='openEditModal("${doc.id}", ${JSON.stringify(data).replace(/"/g, "&quot;")})'>
-                                <i class="bx bx-edit"></i>
-                            </a>
-                            <a href="#" class="action-icon delete" title="Eliminar" data-id="${doc.id}">
-                                <i class="bx bx-trash"></i>
-                            </a>
+                            <div class="icons">
+                                <a href="#" class="action-icon" title="Editar" onclick='openEditModal("${doc.id}", ${JSON.stringify(data).replace(/"/g, "&quot;")})'>
+                                    <i class="bx bx-edit"></i>
+                                </a>
+                                <a href="#" class="action-icon delete" title="Eliminar" data-id="${doc.id}">
+                                    <i class="bx bx-trash"></i>
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 `;

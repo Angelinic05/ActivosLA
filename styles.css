@@ -551,13 +551,19 @@ button:hover {
     }
   
       table{
-        font-size: 5px;
+        font-size: 7px;
     }
 
     th, td {
         padding: 2px; /* Espaciado interno */
     }
 
-    
-    
+      .action-icon {
+        font-size: 2px; /* Tamaño del ícono */
+    }
+      
+    .icons{
+      display: flex;
+      gap: 1px;
+    }
 }
