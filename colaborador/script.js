@@ -21,7 +21,7 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth
         auth.onAuthStateChanged((user) => {
             if (!user) {
                 // Si no hay usuario autenticado, redirigir a la página de inicio de sesión
-                window.location.href = 'http://127.0.0.1:5500/login.html'; // Cambia esto a la URL de tu página de inicio de sesión
+                window.location.href = 'https://angelinic05.github.io/ActivosLA/Login.html'; // Cambia esto a la URL de tu página de inicio de sesión
             } else {
                 // Cargar los colaboradores si el usuario está autenticado
                 loadCollaborators();
