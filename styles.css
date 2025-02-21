@@ -316,8 +316,9 @@ h1{
 }
 
 .table-container {
-    max-height: 70vh; 
-    width: 100%; 
+  max-height: 70vh; 
+  width: 100%; 
+  overflow-x: auto; /* Permitir desplazamiento horizontal */
 }
 
 table {
@@ -325,7 +326,6 @@ table {
   border-collapse: collapse;
   background: white;
   border-radius: 10px;
-  overflow: hidden;
   width: 100%;
   margin: 0 auto;
   position: relative;
@@ -333,23 +333,22 @@ table {
 }
 
 th, td {
-
-    border: 1px solid #ddd; /* Borde de las celdas */
-    padding: 8px; /* Espaciado interno */
-    text-align: left; /* Alinear texto a la izquierda */
+  border: 1px solid #ddd; /* Borde de las celdas */
+  padding: 8px; /* Espaciado interno */
+  text-align: left; /* Alinear texto a la izquierda */
 }
 
 th {
-    background-color: var(--glow-violet); /* Color de fondo para el encabezado */
-    color: white; /* Color del texto del encabezado */
+  background-color: var(--glow-violet); /* Color de fondo para el encabezado */
+  color: white; /* Color del texto del encabezado */
 }
 
 tr:nth-child(even) {
-    background-color: #f2f2f2; /* Color de fondo para filas pares */
+  background-color: #f2f2f2; /* Color de fondo para filas pares */
 }
 
 tr:hover {
-    background-color: #e7e7e7; /* Color de fondo al pasar el mouse sobre una fila */
+  background-color: #e7e7e7; /* Color de fondo al pasar el mouse sobre una fila */
 }
 
 .action-icon {
@@ -451,32 +450,15 @@ button:hover {
 
 
 
-@media (max-width: 600px) {
-    
-    .sidebar.close {
-        left: -100px; /* Ocultar el menú en móviles */
-    }
+@media (max-width: 1100px) {
 
-    .sidebar {
-        transition: left 0.2s ease;
-    }
-
-    .home-section {
-        transition: all 0.5s ease;
-        margin-left: 0; 
-    }
-    
-    .sidebar.close ~ .home-section{
-        left: 0;
-        width:100%;
-    }
     
     .principal{
         padding: 3%;
     }
 
     table{
-        font-size: 8px;
+        font-size: 10px;
     }
 
     th, td {
@@ -525,10 +507,54 @@ button:hover {
 
 }
 
-@media (max-width: 420px) {
 
-  .sidebar.close .nav-links li .sub-menu {
-    display: none;
+
+@media (max-width: 700px) {
+    
+  .sidebar.close {
+      left: -100px; /* Ocultar el menú en móviles */
+  }
+
+  .sidebar {
+      transition: left 0.2s ease;
+  }
+
+  .home-section {
+      transition: all 0.5s ease;
+      margin-left: 0; 
   }
   
+  .sidebar.close ~ .home-section{
+      left: 0;
+      width:100%;
+  }
+  
+
+  table{
+      font-size: 8px;
+  }
+
+  th, td {
+      padding: 2px; /* Espaciado interno */
+  }
+
+
+
+
+}
+
+
+@media (max-width: 420px) {
+
+    .sidebar.close .nav-links li .sub-menu {
+      display: none;
+    }
+  
+      table{
+        font-size: 5px;
+    }
+
+    th, td {
+        padding: 2px; /* Espaciado interno */
+    }
 }
