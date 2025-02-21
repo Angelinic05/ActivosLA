@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-analytics.js";
-        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-analytics.js";
+import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDV8Swrfk0Nf0CY3M9j1bggcu2XqXiVMWA",
@@ -14,7 +15,18 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebas
 
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
+        const auth = getAuth(app);
         const db = getFirestore(app);
+
+        auth.onAuthStateChanged((user) => {
+            if (!user) {
+                // Si no hay usuario autenticado, redirigir a la página de inicio de sesión
+                window.location.href = 'https://angelinic05.github.io/ActivosLA/Login.html'; // Cambia esto a la URL de tu página de inicio de sesión
+            } else {
+                // Cargar los colaboradores si el usuario está autenticado
+                loadCollaborators();
+            }
+        });
 
         async function loadBase() {
             const querySnapshot = await getDocs(collection(db, "bases"));
