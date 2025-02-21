@@ -8,7 +8,7 @@
 }
 :root {
     --background: #041424;
-    --glow-violet: #31056b;
+    --glow-violet: #6e01fd;
     --glow-object-grad: #ffd000;
     --glow-violet-c: rgb(187, 135, 214);
     --text: #ffffff;
@@ -258,19 +258,19 @@ h1{
     right: 40px; /* Distancia desde la derecha */
     width: 70px; /* Ancho del botón */
     height: 70px; /* Altura del botón */
-    background-color: #11101d; /* Color de fondo (verde) */
+    background-color: var(--glow-violet); /* Color de fondo (verde) */
     color: white; /* Color del ícono */
     border-radius: 50%; /* Hacer el botón circular */
     display: flex; /* Usar flexbox para centrar el ícono */
     align-items: center; /* Centrar verticalmente */
     justify-content: center; /* Centrar horizontalmente */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra del botón */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5); /* Sombra del botón */
     cursor: pointer; /* Cambiar el cursor al pasar el mouse */
     transition: background-color 0.3s; /* Transición para el color de fondo */
 }
 
 .floating-button:hover {
-    background-color: #2f2d46; /* Color de fondo al pasar el mouse */
+    background-color: #801fff; /* Color de fondo al pasar el mouse */
 }
 
 .floating-button i {
@@ -321,14 +321,15 @@ h1{
 }
 
 table {
-    border-spacing: 1;
-    border-collapse: collapse;
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-    width: 100%;
-    margin: 0 auto;
-    position: relative;
+  border-spacing: 1;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  box-shadow: 0 7px 12px rgba(0, 0, 0, 0.2); /* Sombra */
 }
 
 th, td {
@@ -348,13 +349,12 @@ tr:nth-child(even) {
 }
 
 tr:hover {
-    background-color: #ddd; /* Color de fondo al pasar el mouse sobre una fila */
+    background-color: #e7e7e7; /* Color de fondo al pasar el mouse sobre una fila */
 }
 
 .action-icon {
     color: #333; /* Color del ícono */
     font-size: 20px; /* Tamaño del ícono */
-    margin-right: 10px; /* Espacio entre los íconos */
     text-decoration: none; /* Sin subrayado */
     transition: color 0.3s; /* Transición para el color */
 }
@@ -377,7 +377,7 @@ tr:hover {
     width: 100%; /* Ancho completo */
     height: 100%; /* Alto completo */
     background-color: rgb(0,0,0); /* Color de fondo negro */
-    background-color: rgba(0,0,0,0.4); /* Fondo negro con opacidad */
+    background-color: rgba(0,0,0,0.7); /* Fondo negro con opacidad */
 }
 
 .modal-content {
@@ -433,7 +433,7 @@ input {
 
 button {
     padding: 10px;
-    background-color: #28a745; /* Color verde */
+    background-color: var(--glow-violet); /* Color verde */
     color: white;
     border: none;
     border-radius: 2%;
@@ -441,8 +441,15 @@ button {
 }
 
 button:hover {
-    background-color: #218838; /* Color más oscuro al pasar el mouse */
+    background-color: #801fff; /* Color más oscuro al pasar el mouse */
 }
+
+.icons{
+  display: flex;
+  gap: 5px;
+}
+
+
 
 @media (max-width: 600px) {
     
@@ -469,7 +476,7 @@ button:hover {
     }
 
     table{
-        font-size: 10px;
+        font-size: 8px;
     }
 
     th, td {
@@ -482,10 +489,46 @@ button:hover {
 
     }
 
+    .bx{
+      font-size: 15px;
+    }
+
+    .action-icon {
+      font-size: 10px; /* Tamaño del ícono */
+    }
+
+    h1{
+      font-size: 15px;
+    }
+
+    .search-inline {
+      margin-right: 3%;
+      width: 40%;
+    }
+
+    .search-inline--input {
+      width: 100%;
+      padding: 5px 5px 5px 35px;
+      font-size: 10px;
+
+    }
+
+
+    .modal-content {
+      margin: 20% auto; 
+      width: 80%; /* Ancho del modal */
+      max-width: 400px; /* Ancho máximo */
+      max-height: 500px; /* Ancho máximo */
+
+    }
+    
+
 }
 
 @media (max-width: 420px) {
+
   .sidebar.close .nav-links li .sub-menu {
     display: none;
   }
+  
 }

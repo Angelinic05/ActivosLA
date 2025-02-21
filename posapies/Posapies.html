@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ActivosLA</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="sidebar close">
+        <div class="logo-details">
+            <i class='bx bx-grid-alt'></i>
+            <span class="logo_name">Activos LA</span>
+        </div>
+        <ul class="nav-links">
+            <li>
+                <a href="../colaborador/Colaboradores.html">
+                    <i class="fa-solid fa-users"></i>
+                    <span class="link_name">Colaboradores</span>
+                </a>
+            </li>
+            <li>
+                <a href="../computador/Computadores.html">
+                    <i class="fa-solid fa-laptop"></i>
+                    <span class="link_name">Computadores</span>
+                </a>
+            </li>
+            <li>
+                <a href="../teclado/Teclados.html">
+                    <i class="fa-regular fa-keyboard"></i>
+                    <span class="link_name">Teclados</span>
+                </a>
+            </li>
+            <li>
+                <a href="../mouse/Mouses.html">
+                    <i class='bx bx-mouse' ></i>
+                    <span class="link_name">Mouses</span>
+                </a>
+            </li>
+            <li>
+                <a href="../celular/Celulares.html">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+                    <span class="link_name">Celulares</span>
+                </a>
+            </li>
+            <li>
+                <a href="../basepc/Basepc.html">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <span class="link_name">Base Pc</span>
+                </a>
+            </li>
+            <li>
+                <a href="../posapies/Posapies.html">
+                    <i class='bx bx-collection' ></i>
+                    <span class="link_name">Posapies</span>
+                </a>
+            </li>
+            <!-- Otros enlaces -->
+        </ul>
+    </div>
+
+    <section class="home-section">
+        <div class="home-content">
+            <i class="bx bx-menu"></i>
+              
+            <div class="encabezado">
+                <h1>POSAPIES</h1> 
+                <div class="search-inline">
+                    <input id="searchInput" name="txtSearch" class="search-inline--input" placeholder="Buscar" onkeyup="filterTable()">
+                </div>
+            </div> 
+        </div>
+        <div class="principal">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Placa</th>
+                        <th>Posapies</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Las filas se llenarán dinámicamente con JavaScript -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Botón flotante -->
+        <div class="floating-button">
+            <i class="bx bx-plus"></i>
+        </div>
+    </section>
+    
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Agregar/Editar Posapies</h2>
+            <form id="posapiesForm">
+                <input type="hidden" id="posapiesId" name="posapiesId">
+                <label for="placa">Placa:</label>
+                <input type="text" id="placa" name="placa" required>
+                
+                <label for="posapies">Posapies:</label>
+                <input type="text" id="posapies" name="posapies" required>
+                
+                <button type="submit">Guardar</button>
+            </form>
+        </div>
+    </div>
+    <script src="../search.js"></script>
+    <script src="../sidebar.js"></script>
+    <script type="module" src="script.js"></script>
+       
+    </script>
+</body>
+</html>

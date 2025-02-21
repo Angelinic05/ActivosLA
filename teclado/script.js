@@ -1,139 +1,4 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sidebar Desplegable</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-<body>
-    <div class="sidebar close">
-        <div class="logo-details">
-            <i class='bx bx-grid-alt'></i>
-            <span class="logo_name">Activos LA</span>
-          </div>
-      <ul class="nav-links">
-        <li>
-            <a href="Colaboradores.html">
-                <i class="fa-solid fa-users"></i>
-                <span class="link_name">Colaboradores</span>
-            </a>
-        </li>
-        <li>
-            <a href="Computadores.html">
-                <i class="fa-solid fa-laptop"></i>
-                <span class="link_name">Computadores</span>
-            </a>
-        </li>
-        <li>
-            <a href="Teclados.html">
-                <i class="fa-regular fa-keyboard"></i>
-                <span class="link_name">Teclados</span>
-            </a>
-        </li>
-        <li>
-            <a href="Mouses.html">
-                <i class='bx bx-mouse' ></i>
-                <span class="link_name">Mouses</span>
-            </a>
-        </li>
-        <li>
-            <a href="Celulares.html">
-                <i class="fa-solid fa-mobile-screen-button"></i>
-                <span class="link_name">Celulares</span>
-            </a>
-        </li>
-        <li>
-            <a href="Basepc.html">
-                <i class="fa-solid fa-layer-group"></i>
-                <span class="link_name">Base Pc</span>
-            </a>
-        </li>
-        <li>
-            <a href="Posapies.html">
-                <i class='bx bx-collection' ></i>
-                <span class="link_name">Posapies</span>
-            </a>
-        </li>
-        <!-- Otros enlaces -->
-      </ul>
-    </div>
-
-    <section class="home-section">
-      <div class="home-content">
-        <i class="bx bx-menu"></i>
-        <h1>TECLADOS</h1>
-      </div>
-      <div class="principal">
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Placa</th>
-                    <th>Marca</th>
-                    <th>Tipo</th>
-                    <th>Serial</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Las filas se llenarán dinámicamente con JavaScript -->
-            </tbody>
-        </table>
-    </div>
-    
-    <!-- Botón flotante -->
-    <div class="floating-button">
-        <i class="bx bx-plus"></i>
-    </div>
-    </section>
-    
-    <!-- Modal -->
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <!-- <span class="close">&times;</span> -->
-            <h2>Agregar/Editar Teclado</h2>
-            <form id="keyboardForm">
-                <input type="hidden" id="keyboardId" name="keyboardId">
-                <label for="placa">Placa:</label>
-                <input type="text" id="placa" name="placa" required>
-                
-                <label for="marca">Marca:</label>
-                <input type="text" id="marca" name="marca" required>
-                
-                <label for="tipo">Tipo:</label>
-                <select id="tipo" name="tipo" required>
-                    <option value="inalambrico">Inalámbrico</option>
-                    <option value="alambrico">Alámbrico</option>
-                </select>
-                
-                <label for="serial">Serial:</label>
-                <input type="text" id="serial" name="serial" required>
-                
-                <button type="submit">Guardar</button>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        let arrow = document.querySelectorAll(".arrow");
-        for (var i = 0; i < arrow.length; i++) {
-            arrow[i].addEventListener("click", (e) => {
-                let arrowParent = e.target.parentElement.parentElement; // seleccionando el padre principal de la flecha
-                arrowParent.classList.toggle("showMenu");
-            });
-        }
-        let sidebar = document.querySelector(".sidebar");
-        let sidebarBtn = document.querySelector(".bx-menu"); // Corrección aquí
-        sidebarBtn.addEventListener("click", () => {
-            sidebar.classList.toggle("close");
-        });
-    </script>
-    
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-analytics.js";
         import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
     
@@ -165,12 +30,15 @@
                         <td>${data.tipo}</td>
                         <td>${data.serial}</td>
                         <td>
-                            <a href="#" class="action-icon" title="Editar" onclick='openEditModal("${doc.id}", ${JSON.stringify(data).replace(/"/g, "&quot;")})'>
-                                <i class="bx bx-edit"></i>
-                            </a>
-                            <a href="#" class="action-icon delete" title="Eliminar " data-id="${doc.id}">
-                                <i class="bx bx-trash"></i>
-                            </a>
+                            <div class="icons">
+                                <a href="#" class="action-icon" title="Editar" onclick='openEditModal("${doc.id}", ${JSON.stringify(data).replace(/"/g, "&quot;")})'>
+                                    <i class="bx bx-edit"></i>
+                                </a>
+                                <a href="#" class="action-icon delete" title="Eliminar " data-id="${doc.id}">
+                                    <i class="bx bx-trash"></i>
+                                </a>
+                            </div>
+                            
                         </td>
                     </tr>
                 `;
@@ -286,6 +154,3 @@
                 document.getElementById("serial").value = ""; // Limpiar el serial
             }
         }
-    </script>
-</body>
-</html>

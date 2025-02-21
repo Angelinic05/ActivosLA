@@ -1,186 +1,4 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sidebar Desplegable</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-<body>
-    <div class="sidebar close">
-        <div class="logo-details">
-            <i class='bx bx-grid-alt'></i>
-            <span class="logo_name">Activos LA</span>
-        </div>
-        <ul class="nav-links">
-            <li>
-                <a href="Colaboradores.html">
-                    <i class="fa-solid fa-users"></i>
-                    <span class="link_name">Colaboradores</span>
-                </a>
-            </li>
-            <li>
-                <a href="Computadores.html">
-                    <i class="fa-solid fa-laptop"></i>
-                    <span class="link_name">Computadores</span>
-                </a>
-            </li>
-            <li>
-                <a href="Teclados.html">
-                    <i class="fa-regular fa-keyboard"></i>
-                    <span class="link_name">Teclados</span>
-                </a>
-            </li>
-            <li>
-                <a href="Mouses.html">
-                    <i class='bx bx-mouse' ></i>
-                    <span class="link_name">Mouses</span>
-                </a>
-            </li>
-            <li>
-                <a href="Celulares.html">
-                    <i class="fa-solid fa-mobile-screen-button"></i>
-                    <span class="link_name">Celulares</span>
-                </a>
-            </li>
-            <li>
-                <a href="Basepc.html">
-                    <i class="fa-solid fa-layer-group"></i>
-                    <span class="link_name">Base PC</span>
-                </a>
-            </li>
-            <li>
-                <a href="Posapies.html">
-                    <i class='bx bx-collection' ></i>
-                    <span class="link_name">Posapies</span>
-                </a>
-            </li>
-            <!-- Otros enlaces -->
-        </ul>
-    </div>
-
-    <section class="home-section">
-        <div class="home-content">
-            <i class="bx bx-menu"></i>
-            <div class="encabezado">
-                <h1>COLABORADORES</h1>
-                <div class="search-inline">
-                    <input id="searchInput" name="txtSearch" class="search-inline--input" placeholder="Buscar" onkeyup="filterTable()">
-                </div>
-            </div>
-            
-        </div>
-        <div class="principal">
-            
-            <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>NOMBRE COMPLETO</th>
-                        <th>CÉDULA</th>
-                        <th>ÁREA</th>
-                        <th>COMPUTADOR</th>
-                        <th>TECLADO</th>
-                        <th>MOUSE</th>
-                        <th>CELULAR</th>
-                        <th>BASE PC</th>
-                        <th>POSA PIES</th>
-                        <th>ACCIONES</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Las filas se llenarán dinámicamente con JavaScript -->
-                </tbody>
-            </table>
-        </div>
-        </div>
-        
-        <!-- Botón flotante -->
-        <div class="floating-button">
-            <i class="bx bx-plus"></i>
-        </div>
-    </section>
-    
-    <!-- Modal -->
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <!-- <span class="close">&times;</span> -->
-            <h2>Formulario Colaborador</h2>
-            <form id="collaboratorForm">
-                <input type="hidden" id="collaboratorId" name="collaboratorId">
-                <label for="fullName">Nombre Completo:</label>
-                <input type="text" id="fullName" name="fullName" required>
-                
-                <label for="idNumber">Cédula:</label>
-                <input type="text" id="idNumber" name="idNumber" required>
-                
-                <label for="area">Área:</label>
-                <input type="text" id="area" name="area" required>
-                
-                <label for="computerSelect">Computador Asignado:</label>
-                <select id="computerSelect" name="computerId">
-                    <option value="">Seleccione un computador</option>
-                    <option value="N/A">N/A (No Aplica)</option>
-                    <!-- Las opciones se llenarán dinámicamente con JavaScript -->
-                </select>
-
-                <label for="keyboardSelect">Teclado Asignado:</label>
-                <select id="keyboardSelect" name="keyboardId">
-                    <option value="">Seleccione un teclado</option>
-                    <option value="N/A">N/A (No Aplica)</option>
-                    <!-- Las opciones se llenarán dinámicamente con JavaScript -->
-                </select>
-
-                <label for="mouseSelect">Mouse Asignado:</label>
-                <select id="mouseSelect" name="mouseId">
-                    <option value="">Seleccione un mouse</option>
-                    <option value="N/A">N/A (No Aplica)</option>
-                    <!-- Las opciones se llenarán dinámicamente con JavaScript -->
-                </select>
-
-                <label for="celularSelect">Celular Asignado:</label>
-                <select id="celularSelect" name="celularId">
-                    <option value="">Seleccione un celular</option>
-                    <option value="N/A">N/A (No Aplica)</option>
-                    <!-- Las opciones se llenarán dinámicamente con JavaScript -->
-                </select>
-                <label for="baseSelect">BASE PC Asignado:</label>
-                <select id="baseSelect" name="baseId">
-                    <option value="">Seleccione una base de pc</option>
-                    <option value="N/A">N/A (No Aplica)</option>
-                    <!-- Las opciones se llenarán dinámicamente con JavaScript -->
-                </select>
-                <label for="posapiesSelect">POSA PIES Asignado:</label>
-                <select id="posapiesSelect" name="posapiesId">
-                    <option value="">Seleccione un posa pies</option>
-                    <option value="N/A">N/A (No Aplica)</option>
-                    <!-- Las opciones se llenarán dinámicamente con JavaScript -->
-                </select>
-                
-                <button type="submit">Guardar</button>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        let arrow = document.querySelectorAll(".arrow");
-        for (var i = 0; i < arrow.length; i++) {
-            arrow[i].addEventListener("click", (e) => {
-                let arrowParent = e.target.parentElement.parentElement; // seleccionando el padre principal de la flecha
-                arrowParent.classList.toggle("showMenu");
-            });
-        }
-        let sidebar = document.querySelector(".sidebar");
-        let sidebarBtn = document.querySelector(".bx-menu"); // Corrección aquí
-        sidebarBtn.addEventListener("click", () => {
-            sidebar.classList.toggle("close");
-        });
-    </script>
-    
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-analytics.js";
         import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
     
@@ -246,34 +64,7 @@
             });
         }
 
-        function filterTable() {
-        const input = document.getElementById("searchInput");
-        const filter = input.value.toLowerCase();
-        const tableBody = document.querySelector("tbody");
-        const rows = tableBody.getElementsByTagName("tr");
-
-        for (let i = 0; i < rows.length; i++) {
-            const cells = rows[i].getElementsByTagName("td");
-            let rowContainsFilter = false;
-
-            for (let j = 0; j < cells.length; j++) {
-                const cell = cells[j];
-                if (cell) {
-                    const textValue = cell.textContent || cell.innerText;
-                    if (textValue.toLowerCase().indexOf(filter) > -1) {
-                        rowContainsFilter = true;
-                        break;
-                    }
-                }
-            }
-
-            if (rowContainsFilter) {
-                rows[i].style.display = "";
-            } else {
-                rows[i].style.display = "none";
-            }
-        }
-    }
+        
 
         async function getComputerData(computerId) {
             if (!computerId || computerId === "N/A") return null; // Si no hay ID o es N/A, retornar null
@@ -317,41 +108,59 @@
             return docSnap.exists() ? docSnap.data() : null; // Retornar los datos del mouse
         }
 
-        async function loadComputers() {
-            const querySnapshot = await getDocs(collection(db, "computadores"));
-            const computerSelect = document.getElementById("computerSelect");
-            computerSelect.innerHTML = ""; // Limpiar las opciones antes de cargar nuevos datos
+        async function loadComputers(collaboratorId = null) {
+    const querySnapshot = await getDocs(collection(db, "computadores"));
+    const computerSelect = document.getElementById("computerSelect");
+    computerSelect.innerHTML = ""; // Limpiar las opciones antes de cargar nuevos datos
 
-            const defaultOption = document.createElement("option");
-            defaultOption.value = "";
-            defaultOption.textContent = "Seleccione un computador";
-            computerSelect.appendChild(defaultOption);
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = "Seleccione un computador";
+    computerSelect.appendChild(defaultOption);
 
-            const assignedComputers = new Set(); // Para almacenar los IDs de computadores asignados
+    const naOption = document.createElement("option");
+    naOption.value = "N/A";
+    naOption.textContent = "N/A (No Aplica)";
+    computerSelect.appendChild(naOption); // Agregar opción N/A
 
-            const collaboratorsSnapshot = await getDocs(collection(db, "colaboradores"));
-            collaboratorsSnapshot.forEach((collabDoc) => {
-                const collabData = collabDoc.data();
-                if (collabData.computerId && collabData.computerId !== "N/A") {
-                    assignedComputers.add(collabData.computerId); // Agregar ID a la lista de asignados
-                }
-            });
+    const assignedComputers = new Set(); // Para almacenar los IDs de computadores asignados
 
-            const naOption = document.createElement("option");
-            naOption.value = "N/A";
-            naOption.textContent = "N/A (No Aplica)";
-            computerSelect.appendChild(naOption); // Agregar opción N/A
+    // Cargar los computadores asignados solo si estamos creando un nuevo colaborador
+    if (!collaboratorId) {
+        const collaboratorsSnapshot = await getDocs(collection(db, "colaboradores"));
+        collaboratorsSnapshot.forEach((collabDoc) => {
+            const collabData = collabDoc.data();
+            if (collabData.computerId && collabData.computerId !== "N/A") {
+                assignedComputers.add(collabData.computerId); // Agregar ID a la lista de asignados
+            }
+        });
+    }
 
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                if (!assignedComputers.has(doc.id)) { // Verificar si el computador ya está asignado
-                    const option = document.createElement("option");
-                    option.value = doc.id; // ID del computador
-                    option.textContent = `${data.placa} - ${data.marca}`; // Mostrar placa y marca
-                    computerSelect.appendChild(option);
-                }
-            });
+    // Cargar todos los computadores
+    querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const option = document.createElement("option");
+        option.value = doc.id; // ID del computador
+        option.textContent = `${data.placa} - ${data.marca} (${data.tipo})`; // Mostrar placa, marca y tipo
+
+        // Si estamos creando un nuevo colaborador, solo agregar computadores no asignados
+        if (!collaboratorId && assignedComputers.has(doc.id)) {
+            // No agregar la opción si ya está asignado
+            return;
         }
+
+        computerSelect.appendChild(option);
+    });
+
+    // Si estamos editando un colaborador, seleccionar el computador asignado
+    if (collaboratorId) {
+        const collaboratorDoc = await getDoc(doc(db, "colaboradores", collaboratorId));
+        const collaboratorData = collaboratorDoc.data();
+        if (collaboratorData && collaboratorData.computerId) {
+            computerSelect.value = collaboratorData.computerId; // Seleccionar el computador asignado
+        }
+    }
+}
 
         async function loadKeyboards() {
             const querySnapshot = await getDocs(collection(db, "teclados"));
@@ -597,6 +406,7 @@
         }
 
         function openEditModal(docId, data) {
+            console.log(data)
     // Abrir el modal
             modal.style.display = "block";
             // Asignar el ID del colaborador al campo oculto
@@ -607,7 +417,9 @@
             document.getElementById("area").value = data.area || "";
             
             // Asignar los IDs de los activos a los selectores
+            console.log("ID del computador:", data.computerId);
             document.getElementById("computerSelect").value = data.computerId || ""; 
+
             document.getElementById("keyboardSelect").value = data.keyboardId || ""; 
             document.getElementById("mouseSelect").value = data.mouseId || ""; 
             document.getElementById("celularSelect").value = data.celularId || "";
@@ -677,7 +489,3 @@
                 document.getElementById("posapiesSelect").value = "";
             }
         }
-
-    </script>
-</body>
-</html>
