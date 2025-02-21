@@ -28,30 +28,46 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth
                 const userData = userDoc.data();
         
                 if (userData && userData.role) {
+                    // Cargar los colaboradores y pasar userData
+                    await loadCollaborators(userData); // Asegúrate de pasar userData aquí
+        
                     if (userData.role === "viewer") {
                         // Ocultar botones de crear, editar y eliminar
-                        console.log("no puede hacer nada")
-                        document.querySelectorAll('.action-icon').forEach(icon => {
-                            icon.style.display = 'none'; // Ocultar iconos de acción
+                        document.querySelector('.floating-button').style.display = 'none';
+                        console.log("El usuario es un visualizador, se oculta el botón flotante.");
+        
+                        // Ocultar la columna de acciones
+                        const actionColumnHeaders = document.querySelectorAll('th:nth-child(10)'); // Encabezado de la columna
+                        const actionColumnCells = document.querySelectorAll('td:nth-child(10)'); // Celdas de la columna
+        
+                        // Ocultar encabezado
+                        actionColumnHeaders.forEach(header => {
+                            header.style.display = 'none'; // Ocultar el encabezado de la columna
+                        });
+        
+                        // Ocultar celdas
+                        actionColumnCells.forEach(cell => {
+                            cell.style.display = 'none'; // Ocultar las celdas de la columna
                         });
                     }
                 }
             }
         });
-    
-        async function loadCollaborators() {
+        
+        async function loadCollaborators(userData) {
             const querySnapshot = await getDocs(collection(db, "colaboradores"));
             const tableBody = document.querySelector("tbody");
             tableBody.innerHTML = ""; // Limpiar la tabla antes de cargar nuevos datos
-
+        
             for (const doc of querySnapshot.docs) {
                 const data = doc.data();
                 const computerData = await getComputerData(data.computerId); // Obtener datos del computador
                 const keyboardData = await getKeyboardData(data.keyboardId); // Obtener datos del teclado
                 const mouseData = await getMouseData(data.mouseId); // Obtener datos del mouse
-                const celularData = await getCelularData(data.celularId); // Obtener datos del mouse
+                const celularData = await getCelularData(data.celularId); // Obtener datos del celular
                 const baseData = await getBaseData(data.baseId);
                 const posapiesData = await getPosapiesData(data.posapiesId);
+                
                 const row = `
                     <tr>
                         <td>${data.nombre}</td>
@@ -63,6 +79,7 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth
                         <td>${celularData ? `${celularData.placa} ${celularData.marca} ${celularData.modelo}` : "Ninguno"}</td>
                         <td>${baseData ? `${baseData.placa}` : "Ninguno"}</td>
                         <td>${posapiesData ? `${posapiesData.placa}` : "Ninguno"}</td>
+                        ${userData.role === "admin" ? `
                         <td>
                             <div class="icons">
                                 <a href="#" class="action-icon" title="Editar" onclick='openEditModal("${doc.id}", ${JSON.stringify(data).replace(/"/g, "&quot;")})'>
@@ -73,11 +90,12 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth
                                 </a>
                             </div>
                         </td>
+                        ` : `<td>N/A</td>`} <!-- Mostrar "N/A" si el usuario es un viewer -->
                     </tr>
                 `;
                 tableBody.innerHTML += row; // Agregar la fila a la tabla
             }
-
+        
             // Agregar evento de clic a los enlaces de eliminación
             const deleteButtons = document.querySelectorAll('.delete');
             deleteButtons.forEach(button => {

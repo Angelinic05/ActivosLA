@@ -18,17 +18,43 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        auth.onAuthStateChanged((user) => {
-            if (!user) {
-                // Si no hay usuario autenticado, redirigir a la página de inicio de sesión
-                window.location.href = 'https://angelinic05.github.io/ActivosLA/Login.html'; // Cambia esto a la URL de tu página de inicio de sesión
-            } else {
-                // Cargar los colaboradores si el usuario está autenticado
+        auth.onAuthStateChanged(async (user) => {
+                    if (!user) {
+                        // Si no hay usuario autenticado, redirigir a la página de inicio de sesión
+                        window.location.href = 'https://angelinic05.github.io/ActivosLA/Login.html';
+                    } else {
+                        // Obtener el rol del usuario
+                        const userDoc = await getDoc(doc(db, "usuarios", user.uid));
+                        const userData = userDoc.data();
+                
+                        if (userData && userData.role) {
+                            // Cargar los colaboradores y pasar userData
+                            await loadBase(userData); // Asegúrate de pasar userData aquí
+                
+                            if (userData.role === "viewer") {
+                                // Ocultar botones de crear, editar y eliminar
+                                document.querySelector('.floating-button').style.display = 'none';
+                                console.log("El usuario es un visualizador, se oculta el botón flotante.");
+                
+                                // Ocultar la columna de acciones
+                                const actionColumnHeaders = document.querySelectorAll('th:nth-child(10)'); // Encabezado de la columna
+                                const actionColumnCells = document.querySelectorAll('td:nth-child(10)'); // Celdas de la columna
+                
+                                // Ocultar encabezado
+                                actionColumnHeaders.forEach(header => {
+                                    header.style.display = 'none'; // Ocultar el encabezado de la columna
+                                });
+                
+                                // Ocultar celdas
+                                actionColumnCells.forEach(cell => {
+                                    cell.style.display = 'none'; // Ocultar las celdas de la columna
+                                });
+                            }
+                        }
+                    }
+                });
 
-            }
-        });
-
-        async function loadBase() {
+        async function loadBase(userData) {
             const querySnapshot = await getDocs(collection(db, "bases"));
             const tableBody = document.querySelector("tbody");
             tableBody.innerHTML = ""; // Limpiar la tabla antes de cargar nuevos datos
@@ -39,18 +65,20 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth
                     <tr>
                         <td>${data.placa}</td>
                         <td>${data.base}</td>
-                        <td>
-                            <div class="icons">
-                                <a href="#" class="action-icon" title="Editar" onclick='openEditModal("${doc.id}", ${JSON.stringify(data).replace(/"/g, "&quot;")})'>
-                                    <i class="bx bx-edit"></i>
-                                </a>
-                                <a href="#" class="action-icon delete" title="Eliminar" data-id="${doc.id}">
-                                    <i class="bx bx-trash"></i>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                `;
+                        ${userData.role === "admin" ? `
+                            <td>
+                                <div class="icons">
+                                    <a href="#" class="action-icon" title="Editar" onclick='openEditModal("${doc.id}", ${JSON.stringify(data).replace(/"/g, "&quot;")})'>
+                                        <i class="bx bx-edit"></i>
+                                    </a>
+                                    <a href="#" class="action-icon delete" title="Eliminar" data-id="${doc.id}">
+                                        <i class="bx bx-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                            ` : `<td>N/A</td>`} <!-- Mostrar "N/A" si el usuario es un viewer -->
+                        </tr>
+                    `;
                 tableBody.innerHTML += row; // Agregar la fila a la tabla
             });
 
