@@ -4,11 +4,11 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+  font-family: "Monserrat", sans-serif;
 }
 :root {
     --background: #041424;
-    --glow-violet: #6e01fd;
+    --glow-violet: rgb(143,000,255);
     --glow-object-grad: #ffd000;
     --glow-violet-c: rgb(187, 135, 214);
     --text: #ffffff;
