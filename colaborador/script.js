@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-analytics.js";
-        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-analytics.js";
+import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
     
         const firebaseConfig = {
             apiKey: "AIzaSyDV8Swrfk0Nf0CY3M9j1bggcu2XqXiVMWA",
@@ -13,8 +14,19 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebas
         };
     
         const app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
         const analytics = getAnalytics(app);
         const db = getFirestore(app);
+
+        auth.onAuthStateChanged((user) => {
+            if (!user) {
+                // Si no hay usuario autenticado, redirigir a la página de inicio de sesión
+                window.location.href = 'http://127.0.0.1:5500/login.html'; // Cambia esto a la URL de tu página de inicio de sesión
+            } else {
+                // Cargar los colaboradores si el usuario está autenticado
+                loadCollaborators();
+            }
+        });
     
         async function loadCollaborators() {
             const querySnapshot = await getDocs(collection(db, "colaboradores"));
@@ -111,32 +123,32 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebas
         }
 
         async function loadComputers(collaboratorId = null) {
-    const querySnapshot = await getDocs(collection(db, "computadores"));
-    const computerSelect = document.getElementById("computerSelect");
-    computerSelect.innerHTML = ""; // Limpiar las opciones antes de cargar nuevos datos
+            const querySnapshot = await getDocs(collection(db, "computadores"));
+            const computerSelect = document.getElementById("computerSelect");
+            computerSelect.innerHTML = ""; // Limpiar las opciones antes de cargar nuevos datos
 
-    const defaultOption = document.createElement("option");
-    defaultOption.value = "";
-    defaultOption.textContent = "Seleccione un computador";
-    computerSelect.appendChild(defaultOption);
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "Seleccione un computador";
+            computerSelect.appendChild(defaultOption);
 
-    const naOption = document.createElement("option");
-    naOption.value = "N/A";
-    naOption.textContent = "N/A (No Aplica)";
-    computerSelect.appendChild(naOption); // Agregar opción N/A
+            const naOption = document.createElement("option");
+            naOption.value = "N/A";
+            naOption.textContent = "N/A (No Aplica)";
+            computerSelect.appendChild(naOption); // Agregar opción N/A
 
-    const assignedComputers = new Set(); // Para almacenar los IDs de computadores asignados
+            const assignedComputers = new Set(); // Para almacenar los IDs de computadores asignados
 
-    // Cargar los computadores asignados solo si estamos creando un nuevo colaborador
-    if (!collaboratorId) {
-        const collaboratorsSnapshot = await getDocs(collection(db, "colaboradores"));
-        collaboratorsSnapshot.forEach((collabDoc) => {
-            const collabData = collabDoc.data();
-            if (collabData.computerId && collabData.computerId !== "N/A") {
-                assignedComputers.add(collabData.computerId); // Agregar ID a la lista de asignados
+            // Cargar los computadores asignados solo si estamos creando un nuevo colaborador
+            if (!collaboratorId) {
+                const collaboratorsSnapshot = await getDocs(collection(db, "colaboradores"));
+                collaboratorsSnapshot.forEach((collabDoc) => {
+                    const collabData = collabDoc.data();
+                    if (collabData.computerId && collabData.computerId !== "N/A") {
+                        assignedComputers.add(collabData.computerId); // Agregar ID a la lista de asignados
+                    }
+                });
             }
-        });
-    }
 
     // Cargar todos los computadores
     querySnapshot.forEach((doc) => {

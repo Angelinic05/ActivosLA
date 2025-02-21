@@ -7,11 +7,13 @@
   font-family: "Monserrat", sans-serif;
 }
 :root {
-    --background: #041424;
+    --background: #e4e9f7;
+    --gray: #3c3b4b;
     --glow-violet: rgb(143,000,255);
     --glow-object-grad: #ffd000;
     --glow-violet-c: rgb(187, 135, 214);
     --text: #ffffff;
+
 }
 .sidebar {
   position: fixed;
@@ -217,7 +219,7 @@
 }
 .home-section {
   position: relative;
-  background: #e4e9f7;
+  background: var(--background);
   height: 100vh;
   left: 260px;
   width: calc(100% - 260px);
@@ -284,6 +286,7 @@ h1{
   align-items: center;
 }
 .search-inline {
+
   margin-right: 2%;
   width: 25%;
   position: relative;
@@ -329,21 +332,22 @@ table {
   width: 100%;
   margin: 0 auto;
   position: relative;
-  box-shadow: 0 7px 12px rgba(0, 0, 0, 0.2); /* Sombra */
+  box-shadow: 0 7px 12px rgba(0, 0, 0, 0.2); 
 }
-th{
-  
-  align-items: center;
-}
-th, td {
-  border: 1px solid #ddd; /* Borde de las celdas */
-  padding: 8px; /* Espaciado interno */
-  text-align: left; /* Alinear texto a la izquierda */
+
+td{
+    text-align: left; /* Alinear texto a la izquierda */
 }
 
 th {
+  text-align: center; /* Alinear texto a la izquierda */
   background-color: var(--glow-violet); /* Color de fondo para el encabezado */
   color: white; /* Color del texto del encabezado */
+}
+
+th, td {
+  padding: 8px; /* Espaciado interno */
+
 }
 
 tr:nth-child(even) {
@@ -387,23 +391,23 @@ tr:hover {
     background-color: #fefefe;
     margin: 8% auto; 
     padding: 30px;
-    border: 1px solid #888;
+    border: 1px solid #a8a8a8;
     width: 80%; /* Ancho del modal */
     max-width: 500px; /* Ancho máximo */
-    max-height: 700px; /* Ancho máximo */
+    max-height: 600px; /* Ancho máximo */
     overflow-y: auto;
 }
 
 .close {
     color: #aaa;
     float: right;
-    font-size: 28px;
+    font-size: 40px;
     font-weight: bold;
 }
 
 .close:hover,
 .close:focus {
-    color: black;
+    color: #fa1900;
     text-decoration: none;
     cursor: pointer;
 }
