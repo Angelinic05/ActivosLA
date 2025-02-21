@@ -30,12 +30,11 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth
                 if (userData && userData.role) {
                     if (userData.role === "viewer") {
                         // Ocultar botones de crear, editar y eliminar
+                        console.log("no puede hacer nada")
                         document.querySelectorAll('.action-icon').forEach(icon => {
                             icon.style.display = 'none'; // Ocultar iconos de acción
                         });
                     }
-                    // Cargar los colaboradores si el usuario está autenticado
-                    loadCollaborators();
                 }
             }
         });
