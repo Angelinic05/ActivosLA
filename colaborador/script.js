@@ -18,12 +18,25 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth
         const analytics = getAnalytics(app);
         const db = getFirestore(app);
 
-        auth.onAuthStateChanged((user) => {
+        auth.onAuthStateChanged(async (user) => {
             if (!user) {
                 // Si no hay usuario autenticado, redirigir a la página de inicio de sesión
-                window.location.href = 'https://angelinic05.github.io/ActivosLA/Login.html'; // Cambia esto a la URL de tu página de inicio de sesión
+                window.location.href = 'https://angelinic05.github.io/ActivosLA/Login.html';
             } else {
-                // Cargar los colaboradores si el usuario está autenticado
+                // Obtener el rol del usuario
+                const userDoc = await getDoc(doc(db, "usuarios", user.uid));
+                const userData = userDoc.data();
+        
+                if (userData && userData.role) {
+                    if (userData.role === "viewer") {
+                        // Ocultar botones de crear, editar y eliminar
+                        document.querySelectorAll('.action-icon').forEach(icon => {
+                            icon.style.display = 'none'; // Ocultar iconos de acción
+                        });
+                    }
+                    // Cargar los colaboradores si el usuario está autenticado
+                    loadCollaborators();
+                }
             }
         });
     
