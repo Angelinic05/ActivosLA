@@ -24,7 +24,6 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth
                 window.location.href = 'https://angelinic05.github.io/ActivosLA/Login.html'; // Cambia esto a la URL de tu página de inicio de sesión
             } else {
                 // Cargar los colaboradores si el usuario está autenticado
-                loadCollaborators();
             }
         });
     

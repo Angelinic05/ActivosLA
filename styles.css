@@ -7,9 +7,9 @@
   font-family: "Monserrat", sans-serif;
 }
 :root {
-    --background: #e4e9f7;
+    --background: rgb(71, 71, 71);
     --gray: #3c3b4b;
-    --glow-violet: rgb(143,000,255);
+    --glow-violet: rgb(46, 46, 46);
     --glow-object-grad: #ffd000;
     --glow-violet-c: rgb(187, 135, 214);
     --text: #ffffff;
@@ -447,7 +447,7 @@ button {
 }
 
 button:hover {
-    background-color: #801fff; /* Color más oscuro al pasar el mouse */
+    background-color: rgb(187, 0, 187); /* Color más oscuro al pasar el mouse */
 }
 
 .icons{
