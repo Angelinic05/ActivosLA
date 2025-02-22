@@ -12,6 +12,14 @@ body {
   font-family: 'Asap', sans-serif;
 }
 
+
+.logo-image {
+  width: 200px;
+  height: auto; /* Mantiene la proporción de la imagen */
+
+}
+
+
 .login {
   overflow: hidden;
   background-color: white;
