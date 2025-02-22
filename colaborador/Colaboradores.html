@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ActivosLA</title>
+    <link rel="icon" type="image/png" href="../LOGO.png">
     <link rel="stylesheet" href="../styles.css">
     <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -11,14 +12,17 @@
 <body>
     <div class="sidebar close">
         <div class="logo-details">
-            <i class='bx bx-grid-alt'></i>
-            <span class="logo_name">Activos LA</span>
+            <i><img src="../LOGO.png" alt="Logo" class="logo-image" /></i>
+            
+            <span class="logo_name">
+                <img src="../ACADEMY.png" alt="Logo" class="logo-academy" />
+            </span>
         </div>
         <ul class="nav-links">
             <li>
                 <a href="../colaborador/Colaboradores.html">
-                    <i class="fa-solid fa-users"></i>
-                    <span class="link_name">Colaboradores</span>
+                    <i class="fa-solid fa-users selection" ></i>
+                    <span class="link_name span-selection">Colaboradores</span>
                 </a>
             </li>
             <li>
@@ -61,7 +65,7 @@
             <li>
                 <div class="profile-details">
                     <div class="profile-content">
-                        <!--<img src="image/profile.jpg" alt="profileImg">-->
+                        <img src="../user.png" alt="profileImg">
                     </div>
                     <div class="name-job">
                         <div class="profile_name">Luque Academy</div>
@@ -77,7 +81,7 @@
         <div class="home-content">
             <i class="bx bx-menu"></i>
             <div class="encabezado">
-                <h1>COLABORADORES</h1>
+                <h1>ACTIVOS LA</h1>
                 <div class="search-inline">
                     <input id="searchInput" name="txtSearch" class="search-inline--input" placeholder="Buscar" onkeyup="filterTable()">
                 </div>
@@ -85,7 +89,7 @@
             
         </div>
         <div class="principal">
-            
+            <h1>COLABORADORES</h1>
             <div class="table-container">
             <table>
                 <thead>
@@ -119,7 +123,7 @@
     <div id="myModal" class="modal">
         <div class="modal-content">
             <span id="closex" class="close">&times;</span>
-            <h2>Formulario Colaborador</h2>
+            <h2>FORMULARIO COLABORADOR</h2>
             <form id="collaboratorForm">
                 <input type="hidden" id="collaboratorId" name="collaboratorId">
                 <label for="fullName">Nombre Completo:</label>

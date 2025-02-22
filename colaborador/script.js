@@ -18,41 +18,41 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
         const analytics = getAnalytics(app);
         const db = getFirestore(app);
 
-        // auth.onAuthStateChanged(async (user) => {
-        //     if (!user) {
-        //         // Si no hay usuario autenticado, redirigir a la página de inicio de sesión
-        //         window.location.href = 'https://angelinic05.github.io/ActivosLA/Login.html';
-        //     } else {
-        //         // Obtener el rol del usuario
-        //         const userDoc = await getDoc(doc(db, "usuarios", user.uid));
-        //         const userData = userDoc.data();
+        auth.onAuthStateChanged(async (user) => {
+            if (!user) {
+                // Si no hay usuario autenticado, redirigir a la página de inicio de sesión
+                window.location.href = 'https://angelinic05.github.io/ActivosLA/Login.html';
+            } else {
+                // Obtener el rol del usuario
+                const userDoc = await getDoc(doc(db, "usuarios", user.uid));
+                const userData = userDoc.data();
         
-        //         if (userData && userData.role) {
-        //             // Cargar los colaboradores y pasar userData
-        //             await loadCollaborators(userData); // Asegúrate de pasar userData aquí
+                if (userData && userData.role) {
+                    // Cargar los colaboradores y pasar userData
+                    await loadCollaborators(userData); // Asegúrate de pasar userData aquí
         
-        //             if (userData.role === "viewer") {
-        //                 // Ocultar botones de crear, editar y eliminar
-        //                 document.querySelector('.floating-button').style.display = 'none';
-        //                 console.log("El usuario es un visualizador, se oculta el botón flotante.");
+                    if (userData.role === "viewer") {
+                        // Ocultar botones de crear, editar y eliminar
+                        document.querySelector('.floating-button').style.display = 'none';
+                        console.log("El usuario es un visualizador, se oculta el botón flotante.");
         
-        //                 // Ocultar la columna de acciones
-        //                 const actionColumnHeaders = document.querySelectorAll('th:nth-child(10)'); // Encabezado de la columna
-        //                 const actionColumnCells = document.querySelectorAll('td:nth-child(10)'); // Celdas de la columna
+                        // Ocultar la columna de acciones
+                        const actionColumnHeaders = document.querySelectorAll('th:nth-child(10)'); // Encabezado de la columna
+                        const actionColumnCells = document.querySelectorAll('td:nth-child(10)'); // Celdas de la columna
         
-        //                 // Ocultar encabezado
-        //                 actionColumnHeaders.forEach(header => {
-        //                     header.style.display = 'none'; // Ocultar el encabezado de la columna
-        //                 });
+                        // Ocultar encabezado
+                        actionColumnHeaders.forEach(header => {
+                            header.style.display = 'none'; // Ocultar el encabezado de la columna
+                        });
         
-        //                 // Ocultar celdas
-        //                 actionColumnCells.forEach(cell => {
-        //                     cell.style.display = 'none'; // Ocultar las celdas de la columna
-        //                 });
-        //             }
-        //         }
-        //     }
-        // });
+                        // Ocultar celdas
+                        actionColumnCells.forEach(cell => {
+                            cell.style.display = 'none'; // Ocultar las celdas de la columna
+                        });
+                    }
+                }
+            }
+        });
 
         document.getElementById("logout-button").addEventListener("click", async () => {
             try {
