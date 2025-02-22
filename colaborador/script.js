@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-analytics.js";
 import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
+import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
     
         const firebaseConfig = {
             apiKey: "AIzaSyDV8Swrfk0Nf0CY3M9j1bggcu2XqXiVMWA",
@@ -51,6 +51,17 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth
                         });
                     }
                 }
+            }
+        });
+
+        document.getElementById("logout-button").addEventListener("click", async () => {
+            try {
+                await signOut(auth);
+                console.log("Usuario cerrado sesión");
+                // Redirigir a la página de inicio de sesión
+                window.location.href = 'https://angelinic05.github.io/ActivosLA/Login.html';
+            } catch (error) {
+                console.error("Error al cerrar sesión:", error);
             }
         });
         
