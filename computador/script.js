@@ -53,6 +53,18 @@ auth.onAuthStateChanged(async (user) => {
                 }
             }
         });
+
+        
+                document.getElementById("logout-button").addEventListener("click", async () => {
+                    try {
+                        await signOut(auth);
+                        console.log("Usuario cerrado sesión");
+                        // Redirigir a la página de inicio de sesión
+                        window.location.href = 'https://angelinic05.github.io/ActivosLA/Login.html';
+                    } catch (error) {
+                        console.error("Error al cerrar sesión:", error);
+                    }
+                });
 async function loadComputers() {
     const querySnapshot = await getDocs(collection(db, "computadores"));
     const tableBody = document.querySelector("tbody");

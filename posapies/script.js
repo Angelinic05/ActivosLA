@@ -54,6 +54,18 @@ const db = getFirestore(app);
             }
         });
 
+        
+                document.getElementById("logout-button").addEventListener("click", async () => {
+                    try {
+                        await signOut(auth);
+                        console.log("Usuario cerrado sesión");
+                        // Redirigir a la página de inicio de sesión
+                        window.location.href = 'https://angelinic05.github.io/ActivosLA/Login.html';
+                    } catch (error) {
+                        console.error("Error al cerrar sesión:", error);
+                    }
+                });
+
 async function loadPosapies() {
     const querySnapshot = await getDocs(collection(db, "posapies"));
     const tableBody = document.querySelector("tbody");
