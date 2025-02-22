@@ -79,7 +79,6 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth
                         <td>${celularData ? `${celularData.placa} ${celularData.marca} ${celularData.modelo}` : "Ninguno"}</td>
                         <td>${baseData ? `${baseData.placa}` : "Ninguno"}</td>
                         <td>${posapiesData ? `${posapiesData.placa}` : "Ninguno"}</td>
-                        ${userData.role === "admin" ? `
                         <td>
                             <div class="icons">
                                 <a href="#" class="action-icon" title="Editar" onclick='openEditModal("${doc.id}", ${JSON.stringify(data).replace(/"/g, "&quot;")})'>
@@ -90,7 +89,6 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth
                                 </a>
                             </div>
                         </td>
-                        ` : `<td>N/A</td>`} <!-- Mostrar "N/A" si el usuario es un viewer -->
                     </tr>
                 `;
                 tableBody.innerHTML += row; // Agregar la fila a la tabla
