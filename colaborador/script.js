@@ -471,7 +471,7 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth
         window.openEditModal = openEditModal;
 
         window.onload = function() {
-            loadCollaborators(); 
+            // loadCollaborators(); 
             loadComputers(); 
             loadKeyboards(); 
             loadMouses(); 
