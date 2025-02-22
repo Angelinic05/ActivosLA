@@ -19,46 +19,57 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth
         const db = getFirestore(app);
 
         auth.onAuthStateChanged(async (user) => {
-                    if (!user) {
-                        // Si no hay usuario autenticado, redirigir a la página de inicio de sesión
-                        window.location.href = 'https://angelinic05.github.io/ActivosLA/Login.html';
-                    } else {
-                        // Obtener el rol del usuario
-                        const userDoc = await getDoc(doc(db, "usuarios", user.uid));
-                        const userData = userDoc.data();
-                
-                        if (userData && userData.role) {
-                            // Cargar los colaboradores y pasar userData
-                            await loadBase(userData); // Asegúrate de pasar userData aquí
-                
-                            if (userData.role === "viewer") {
-                                // Ocultar botones de crear, editar y eliminar
-                                document.querySelector('.floating-button').style.display = 'none';
-                                console.log("El usuario es un visualizador, se oculta el botón flotante.");
-                
-                                // Ocultar la columna de acciones
-                                const actionColumnHeaders = document.querySelectorAll('th:nth-child(10)'); // Encabezado de la columna
-                                const actionColumnCells = document.querySelectorAll('td:nth-child(10)'); // Celdas de la columna
-                
-                                // Ocultar encabezado
-                                actionColumnHeaders.forEach(header => {
-                                    header.style.display = 'none'; // Ocultar el encabezado de la columna
-                                });
-                
-                                // Ocultar celdas
-                                actionColumnCells.forEach(cell => {
-                                    cell.style.display = 'none'; // Ocultar las celdas de la columna
-                                });
-                            }
+            if (!user) {
+                // Si no hay usuario autenticado, redirigir a la página de inicio de sesión
+                window.location.href = 'https://angelinic05.github.io/ActivosLA/Login.html';
+            } else {
+                // Obtener el rol del usuario
+                const userDoc = await getDoc(doc(db, "usuarios", user.uid));
+        
+                // Verificar si el documento del usuario existe
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+        
+                    // Verificar si userData tiene un rol
+                    if (userData && userData.role) {
+                        // Cargar los colaboradores y pasar userData
+                        await loadBase(userData); // Asegúrate de pasar userData aquí
+        
+                        if (userData.role === "viewer") {
+                            // Ocultar botones de crear, editar y eliminar
+                            document.querySelector('.floating-button').style.display = 'none';
+                            console.log("El usuario es un visualizador, se oculta el botón flotante.");
+        
+                            // Ocultar la columna de acciones
+                            const actionColumnHeaders = document.querySelectorAll('th:nth-child(3)'); // Encabezado de la columna
+                            const actionColumnCells = document.querySelectorAll('td:nth-child(3)'); // Celdas de la columna
+        
+                            // Ocultar encabezado
+                            actionColumnHeaders.forEach(header => {
+                                header.style.display = 'none'; // Ocultar el encabezado de la columna
+                            });
+        
+                            // Ocultar celdas
+                            actionColumnCells.forEach(cell => {
+                                cell.style.display = 'none'; // Ocultar las celdas de la columna
+                            });
                         }
+                    } else {
+                        console.error('El documento del usuario no tiene un rol definido.');
+                        alert('Error: No se pudo obtener la información del usuario.');
                     }
-                });
-
+                } else {
+                    console.error('No se encontró el documento del usuario en Firestore.');
+                    alert('Error: No se encontró el documento del usuario.');
+                }
+            }
+        });
+        
         async function loadBase(userData) {
             const querySnapshot = await getDocs(collection(db, "bases"));
             const tableBody = document.querySelector("tbody");
             tableBody.innerHTML = ""; // Limpiar la tabla antes de cargar nuevos datos
-
+        
             querySnapshot.forEach((doc) => {
                 const data = doc.data();
                 const row = `
@@ -76,12 +87,12 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth
                                     </a>
                                 </div>
                             </td>
-                            ` : `<td>N/A</td>`} <!-- Mostrar "N/A" si el usuario es un viewer -->
-                        </tr>
-                    `;
+                        ` : `<td>N/A</td>`} <!-- Mostrar "N/A" si el usuario es un viewer -->
+                    </tr>
+                `;
                 tableBody.innerHTML += row; // Agregar la fila a la tabla
             });
-
+        
             // Agregar evento de clic a los enlaces de eliminación
             const deleteButtons = document.querySelectorAll('.delete');
             deleteButtons.forEach(button => {
