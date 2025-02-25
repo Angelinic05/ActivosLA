@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ActivosLA</title>
+    <link rel="icon" type="image/png" href="../LOGO.png">
     <link rel="stylesheet" href="../styles.css">
     <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -20,48 +21,69 @@
             </span>
         </div>
         <ul class="nav-links">
-            <li>
-                <a href="../colaborador/Colaboradores.html">
-                    <i class="fa-solid fa-users"></i>
-                    <span class="link_name">Colaboradores</span>
-                </a>
-            </li>
-            <li>
-                <a href="../computador/Computadores.html">
-                    <i class="fa-solid fa-laptop"></i>
-                    <span class="link_name">Computadores</span>
-                </a>
-            </li>
-            <li>
-                <a href="../teclado/Teclados.html">
-                    <i class="fa-regular fa-keyboard"></i>
-                    <span class="link_name">Teclados</span>
-                </a>
-            </li>
-            <li>
-                <a href="../mouse/Mouses.html">
-                    <i class='bx bx-mouse' ></i>
-                    <span class="link_name">Mouses</span>
-                </a>
-            </li>
-            <li>
-                <a href="../celular/Celulares.html">
-                    <i class="fa-solid fa-mobile-screen-button"></i>
-                    <span class="link_name">Celulares</span>
-                </a>
-            </li>
-            <li>
-                <a href="../basepc/Basepc.html">
-                    <i class="fa-solid fa-layer-group selection"></i>
-                    <span class="link_name span-selection">Base Pc</span>
-                </a>
-            </li>
-            <li>
-                <a href="../posapies/Posapies.html">
-                    <i class='bx bx-collection' ></i>
-                    <span class="link_name">Posapies</span>
-                </a>
-            </li>
+            <div class="options-up">
+                <div>
+                    <li>
+                        <a href="../colaborador/Colaboradores.html">
+                            <i class="fa-solid fa-users" ></i>
+                            <span class="link_name sidebar-option">Colaboradores</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../computador/Computadores.html">
+                            <i class="fa-solid fa-laptop"></i>
+                            <span class="link_name sidebar-option">Computadores</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../teclado/Teclados.html">
+                            <i class="fa-regular fa-keyboard"></i>
+                            <span class="link_name sidebar-option">Teclados</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../mouse/Mouses.html">
+                            <i class='bx bx-mouse' ></i>
+                            <span class="link_name sidebar-option">Mouses</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../celular/Celulares.html">
+                            <i class="fa-solid fa-mobile-screen-button"></i>
+                            <span class="link_name sidebar-option">Celulares</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../basepc/Basepc.html">
+                            <i class="fa-solid fa-layer-group selection"></i>
+                            <span class="link_name span-selection">Base Pc</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../posapies/Posapies.html">
+                            <i class='bx bx-collection' ></i>
+                            <span class="link_name sidebar-option">Posapies</span>
+                        </a>
+                    </li>
+                </div>
+                <div>
+                    <li>
+                        <a href="../posapies/Posapies.html">
+                            <i class='bx bx-copy-alt' ></i>
+                            <span class="link_name sidebar-option">Prestamos</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../posapies/Posapies.html">
+                            <i class='bx bx-history'></i>
+                            <span class="link_name sidebar-option">Historial</span>
+                        </a>
+                    </li>
+                </div>
+            </div>
+
+            
+
             <!-- Otros enlaces -->
             <li>
                 <div class="profile-details">
@@ -84,7 +106,6 @@
             
             <div class="encabezado">
                 <h1>ACTIVOS LA</h1>
-                
                 <div class="search-inline">
                     <input id="searchInput" name="txtSearch" class="search-inline--input" placeholder="Buscar" onkeyup="filterTable()">
                 </div>
@@ -125,7 +146,7 @@
                 <label for="base">Base PC:</label>
                 <input type="text" id="base" name="base" required>
                 
-                <button type="submit">Guardar</button>
+                <button class="custom-btn btn-2" type="submit">Guardar</button>
             </form>
         </div>
     </div>

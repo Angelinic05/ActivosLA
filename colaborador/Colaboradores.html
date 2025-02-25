@@ -19,49 +19,67 @@
             </span>
         </div>
         <ul class="nav-links">
-            <li>
-                <a href="../colaborador/Colaboradores.html">
-                    <i class="fa-solid fa-users selection" ></i>
-                    <span class="link_name span-selection">Colaboradores</span>
-                </a>
-            </li>
-            <li>
-                <a href="../computador/Computadores.html">
-                    <i class="fa-solid fa-laptop"></i>
-                    <span class="link_name">Computadores</span>
-                </a>
-            </li>
-            <li>
-                <a href="../teclado/Teclados.html">
-                    <i class="fa-regular fa-keyboard"></i>
-                    <span class="link_name">Teclados</span>
-                </a>
-            </li>
-            <li>
-                <a href="../mouse/Mouses.html">
-                    <i class='bx bx-mouse' ></i>
-                    <span class="link_name">Mouses</span>
-                </a>
-            </li>
-            <li>
-                <a href="../celular/Celulares.html">
-                    <i class="fa-solid fa-mobile-screen-button"></i>
-                    <span class="link_name">Celulares</span>
-                </a>
-            </li>
-            <li>
-                <a href="../basepc/Basepc.html">
-                    <i class="fa-solid fa-layer-group"></i>
-                    <span class="link_name">Base Pc</span>
-                </a>
-            </li>
-            <li>
-                <a href="../posapies/Posapies.html">
-                    <i class='bx bx-collection' ></i>
-                    <span class="link_name">Posapies</span>
-                </a>
-            </li>
-            <!-- Otros enlaces -->
+            <div class="options-up">
+                <div>
+                    <li>
+                        <a href="../colaborador/Colaboradores.html">
+                            <i class="fa-solid fa-users selection" ></i>
+                            <span class="link_name span-selection">Colaboradores</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../computador/Computadores.html">
+                            <i class="fa-solid fa-laptop"></i>
+                            <span class="link_name sidebar-option">Computadores</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../teclado/Teclados.html">
+                            <i class="fa-regular fa-keyboard"></i>
+                            <span class="link_name sidebar-option">Teclados</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../mouse/Mouses.html">
+                            <i class='bx bx-mouse' ></i>
+                            <span class="link_name sidebar-option">Mouses</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../celular/Celulares.html">
+                            <i class="fa-solid fa-mobile-screen-button"></i>
+                            <span class="link_name sidebar-option">Celulares</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../basepc/Basepc.html">
+                            <i class="fa-solid fa-layer-group"></i>
+                            <span class="link_name sidebar-option">Base Pc</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../posapies/Posapies.html">
+                            <i class='bx bx-collection' ></i>
+                            <span class="link_name sidebar-option">Posapies</span>
+                        </a>
+                    </li>
+                </div>
+                <div>
+                    <li>
+                        <a href="../posapies/Posapies.html">
+                            <i class='bx bx-copy-alt' ></i>
+                            <span class="link_name sidebar-option">Prestamos</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../posapies/Posapies.html">
+                            <i class='bx bx-history'></i>
+                            <span class="link_name sidebar-option">Historial</span>
+                        </a>
+                    </li>
+                </div>
+            </div>
+           
             <li>
                 <div class="profile-details">
                     <div class="profile-content">
@@ -91,25 +109,28 @@
         <div class="principal">
             <h1>COLABORADORES</h1>
             <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>NOMBRE COMPLETO</th>
-                        <th>CÉDULA</th>
-                        <th>ÁREA</th>
-                        <th>COMPUTADOR</th>
-                        <th>TECLADO</th>
-                        <th>MOUSE</th>
-                        <th>CELULAR</th>
-                        <th>BASE PC</th>
-                        <th>POSA PIES</th>
-                        <th>ACCIONES</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Las filas se llenarán dinámicamente con JavaScript -->
-                </tbody>
-            </table>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>NOMBRE COMPLETO</th>
+                            <th>CÉDULA</th>
+                            <th>ÁREA</th>
+                            <th>COMPUTADOR</th>
+                            <th>TECLADO</th>
+                            <th>MOUSE</th>
+                            <th>CELULAR</th>
+                            <th>BASE PC</th>
+                            <th>POSA PIES</th>
+                            <th>ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Las filas se llenarán dinámicamente con JavaScript -->
+                    </tbody>
+                </table>
+
+            </div>
+            
         </div>
         </div>
         
@@ -175,7 +196,7 @@
                     <!-- Las opciones se llenarán dinámicamente con JavaScript -->
                 </select>
                 
-                <button type="submit">Guardar</button>
+                <button class="custom-btn btn-2" type="submit">Guardar</button>
             </form>
         </div>
     </div>

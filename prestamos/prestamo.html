@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -13,7 +15,6 @@
     <div class="sidebar close">
         <div class="logo-details">
             <i><img src="../LOGO.png" alt="Logo" class="logo-image" /></i>
-            
             <span class="logo_name">
                 <img src="../ACADEMY.png" alt="Logo" class="logo-academy" />
             </span>
@@ -23,7 +24,7 @@
                 <div>
                     <li>
                         <a href="../colaborador/Colaboradores.html">
-                            <i class="fa-solid fa-users" ></i>
+                            <i class="fa-solid fa-users"></i>
                             <span class="link_name sidebar-option">Colaboradores</span>
                         </a>
                     </li>
@@ -41,8 +42,8 @@
                     </li>
                     <li>
                         <a href="../mouse/Mouses.html">
-                            <i class='bx bx-mouse selection'></i>
-                            <span class="link_name  span-selection">Mouses</span>
+                            <i class='bx bx-mouse'></i>
+                            <span class="link_name sidebar-option">Mouses</span>
                         </a>
                     </li>
                     <li>
@@ -59,27 +60,26 @@
                     </li>
                     <li>
                         <a href="../posapies/Posapies.html">
-                            <i class='bx bx-collection' ></i>
+                            <i class='bx bx-collection'></i>
                             <span class="link_name sidebar-option">Posapies</span>
                         </a>
                     </li>
                 </div>
                 <div>
                     <li>
-                        <a href="../posapies/Posapies.html">
-                            <i class='bx bx-copy-alt' ></i>
-                            <span class="link_name sidebar-option">Prestamos</span>
+                        <a href="../prestamos/Prestamos.html">
+                            <i class='bx bx-copy-alt selection'></i>
+                            <span class="link_name sidebar-option span-selection">Prestamos</span>
                         </a>
                     </li>
                     <li>
-                        <a href="../posapies/Posapies.html">
+                        <a href="../historial/Historial.html">
                             <i class='bx bx-history'></i>
                             <span class="link_name sidebar-option">Historial</span>
                         </a>
                     </li>
                 </div>
             </div>
-
             <li>
                 <div class="profile-details">
                     <div class="profile-content">
@@ -89,75 +89,85 @@
                         <div class="profile_name">Luque Academy</div>
                         <div class="job">Log Out</div>
                     </div>
-                    <i class='bx bx-log-out' id="logout-button"></i> <!-- Agregamos un ID para el botón de logout -->
+                    <i class='bx bx-log-out' id="logout-button"></i>
                 </div>
             </li>
-            <!-- Otros enlaces -->
         </ul>
     </div>
 
     <section class="home-section">
         <div class="home-content">
             <i class="bx bx-menu"></i>
-            
             <div class="encabezado">
                 <h1>ACTIVOS LA</h1>
-                
                 <div class="search-inline">
                     <input id="searchInput" name="txtSearch" class="search-inline--input" placeholder="Buscar" onkeyup="filterTable()">
                 </div>
-            </div> 
+            </div>
         </div>
         <div class="principal">
-            <h1>MOUSES</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th>PLACA</th>
-                        <th>MARCA</th>
-                        <th>TIPO</th>
-                        <th>SERIAL</th>
-                        <th>ACCIONES</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Las filas se llenarán dinámicamente con JavaScript -->
-                </tbody>
-            </table>
-        </div>
-        
-        <!-- Botón flotante -->
-        <div class="floating-button">
-            <i class="bx bx-plus"></i>
+
+            <div class="container">
+                <div class="table-pres">
+                    <h1>PRESTAMOS</h1>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>FECHA PRÉSTAMO</th>
+                                <th>NOMBRE COMPLETO</th>
+                                <th>CÉDULA</th>
+                                <th>CARGO</th>
+                                <th>EQUIPO</th>
+                                <th>FECHA DEVOLUCIÓN</th>
+                                <th>ESTADO</th>
+                                <th>ACCIONES</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Las filas se llenarán dinámicamente con JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="form-container">
+                    <h2 class="text-color">FORMULARIO</h2>
+                    <form id="prestamoForm">
+                        <input type="hidden" id="prestamoId" name="prestamoId">
+                        
+                        <label for="fullName" class="text-color" >Nombre Completo:</label>
+                        <input type="text" id="fullName" name="fullName" required>
+                        
+                        <label for="idNumber" class="text-color">Cédula:</label>
+                        <input type="text" id="idNumber" name="idNumber" required>
+                        
+                        <label for="jobTitle" class="text-color">Cargo:</label>
+                        <input type="text" id="jobTitle" name="jobTitle" required>
+                        
+                        <label for="equipmentSearch" class="text-color">Buscar equipo:</label>
+                        <input type="text" id="equipmentSearch" placeholder="Buscar equipo...">
+                        <select id="equipmentSelect" name="equipmentId" multiple>
+                            <option value="" class="text-color">Seleccione un equipo</option>
+                            <option value="N/A">N/A (No Aplica)</option>
+                            <!-- Las demás opciones se cargarán dinámicamente -->
+                        </select>
+                        <div id="selectedEquipments" class="text-color">Equipos seleccionados: Ninguno</div>
+                        
+                        <label for="returnDate" class="text-color">Fecha Devolución:</label>
+                        <input type="date" id="returnDate" name="returnDate" required>
+                        
+                        <label for="status" class="text-color">Estado:</label>
+                        <select id="status" name="status" required>
+                            <option value="pendiente">Pendiente</option>
+                            <option value="vencido">Vencido</option>
+                            <option value="entregado">Entregado</option>
+                        </select>
+                        
+                        <button class="custom-btn btn-2" type="submit">Guardar</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </section>
     
-    <!-- Modal -->
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <span id="closex" class="close">&times;</span>
-            <h2>Agregar/Editar Mouse</h2>
-            <form id="mouseForm">
-                <input type="hidden" id="mouseId" name="mouseId">
-                <label for="placa">Placa:</label>
-                <input type="text" id="placa" name="placa" required>
-                
-                <label for="marca">Marca:</label>
-                <input type="text" id="marca" name="marca" required>
-                
-                <label for="tipo">Tipo:</label>
-                <select id="tipo" name="tipo" required>
-                    <option value="inalambrico">Inalámbrico</option>
-                    <option value="alambrico">Alámbrico</option>
-                </select>
-                
-                <label for="serial">Serial:</label>
-                <input type="text" id="serial" name="serial" required>
-                
-                <button class="custom-btn btn-2" type="submit">Guardar</button>
-            </form>
-        </div>
-    </div>
     <script src="../search.js"></script>
     <script src="../sidebar.js"></script>
     <script type="module" src="script.js"></script>

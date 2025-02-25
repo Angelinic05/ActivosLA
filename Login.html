@@ -13,7 +13,13 @@
         <img src="LOGO LA - BACK.png" alt="Logo" class="logo-image" />
         <input type="text" id="username" placeholder="Username" required>
         <input type="password" id="password" placeholder="Password" required>
-        <button type="submit">Login</button>
+        <!-- <button type="submit">Login</button> -->
+        <button type="submit" class="learn-more">
+            <span class="circle" aria-hidden="true">
+              <span class="icon arrow"></span>
+            </span>
+            <span class="button-text">Login</span>
+          </button>
         <div id="error-message" style="color: red; margin-top: 10px;"></div> <!-- Elemento para mostrar el mensaje de error -->
     </form>
 
@@ -67,7 +73,7 @@
                         
                     ) {
                         console.log('Redirigiendo a la página de administradores');
-                        window.location.href = 'https://angelinic05.github.io/ActivosLA/colaborador/Colaboradores.html'; // URL para administradores
+                        window.location.href = 'http://127.0.0.1:5500/colaborador/Colaboradores.html'; // URL para administradores
                     } else if (userData.role === "viewer") {
                         console.log('Redirigiendo a la página de visualizadores');
                         window.location.href = 'https://angelinic05.github.io/ActivosLA/colaborador/Colaboradores.html'; // URL para visualizadores
