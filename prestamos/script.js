@@ -18,27 +18,27 @@ const auth = getAuth(app);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
 
-auth.onAuthStateChanged(async (user) => {
-    if (!user) {
-        // Si no hay usuario autenticado, redirigir a la página de inicio de sesión
-        window.location.href = 'https://angelinic05.github.io/ActivosLA/Login.html';
-    } else {
-        // Obtener el rol del usuario
-        const userDoc = await getDoc(doc(db, "usuarios", user.uid));
-        const userData = userDoc.data();
+// auth.onAuthStateChanged(async (user) => {
+//     if (!user) {
+//         // Si no hay usuario autenticado, redirigir a la página de inicio de sesión
+//         window.location.href = 'https://angelinic05.github.io/ActivosLA/Login.html';
+//     } else {
+//         // Obtener el rol del usuario
+//         const userDoc = await getDoc(doc(db, "usuarios", user.uid));
+//         const userData = userDoc.data();
 
-        if (userData && userData.role) {
-            // Cargar los préstamos
-            await loadPrestamos();
+//         if (userData && userData.role) {
+//             // Cargar los préstamos
+//             await loadPrestamos();
 
-            if (userData.role === "viewer") {
-                // Ocultar botones de crear, editar y eliminar
-                document.querySelector('.floating-button').style.display = 'none';
-                console.log("El usuario es un visualizador, se oculta el botón flotante.");
-            }
-        }
-    }
-});
+//             if (userData.role === "viewer") {
+//                 // Ocultar botones de crear, editar y eliminar
+//                 document.querySelector('.floating-button').style.display = 'none';
+//                 console.log("El usuario es un visualizador, se oculta el botón flotante.");
+//             }
+//         }
+//     }
+// });
 
 document.getElementById("logout-button").addEventListener("click", async () => {
     try {
@@ -128,7 +128,7 @@ async function loadPrestamos() {
   }
   
 
-document.getElementById("prestamoForm").onsubmit = async function(event) {
+  document.getElementById("prestamoForm").onsubmit = async function(event) {
     event.preventDefault(); 
 
     const prestamoId = document.getElementById("prestamoId").value; 
@@ -165,9 +165,8 @@ document.getElementById("prestamoForm").onsubmit = async function(event) {
         });
     }
 
-
     this.reset(); // Limpiar el formulario
-    loadPrestamos(); // Recargar la tabla
+    window.location.reload(); // Recargar la página
 };
 
 async function deletePrestamo(docId) {
@@ -175,7 +174,7 @@ async function deletePrestamo(docId) {
         try {
             await deleteDoc(doc(db, "prestamos", docId)); // Eliminar el documento en Firestore
             alert("Préstamo eliminado correctamente.");
-            loadPrestamos(); // Recargar la lista de préstamos
+            window.location.reload(); // Recargar la página
         } catch (error) {
             console.error("Error al eliminar préstamo:", error);
             alert("Hubo un error al eliminar el préstamo.");

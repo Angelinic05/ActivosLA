@@ -609,6 +609,7 @@ button:hover {
 .form-container {
   width: 500px; 
   padding: 2%;
+  overflow-y: auto;
 }
 
 .table-pres, 
@@ -733,7 +734,7 @@ button:hover {
     
     .table-pres, 
     .form-container{
-      height: fit-content;
+      height: 48%;
     }
     
     label, .text-color{
