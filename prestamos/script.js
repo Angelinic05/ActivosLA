@@ -33,8 +33,9 @@ auth.onAuthStateChanged(async (user) => {
 
             if (userData.role === "viewer") {
                 // Ocultar botones de crear, editar y eliminar
-                document.querySelector('.floating-button').style.display = 'none';
-                console.log("El usuario es un visualizador, se oculta el botón flotante.");
+                document.querySelector('.form-container').style.display = 'none'; // Ocultar el contenedor del formulario
+
+
             }
         }
     }
