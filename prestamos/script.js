@@ -21,7 +21,7 @@ const db = getFirestore(app);
 auth.onAuthStateChanged(async (user) => {
     if (!user) {
         // Si no hay usuario autenticado, redirigir a la página de inicio de sesión
-        window.location.href = 'https://angelinic05.github.io/ActivosLA/Login.html';
+        // window.location.href = 'https://angelinic05.github.io/ActivosLA/Login.html';
     } else {
         // Obtener el rol del usuario
         const userDoc = await getDoc(doc(db, "usuarios", user.uid));
@@ -32,14 +32,33 @@ auth.onAuthStateChanged(async (user) => {
             await loadPrestamos();
 
             if (userData.role === "viewer") {
+                console.log("1")
                 // Ocultar botones de crear, editar y eliminar
-                document.querySelector('.form-container').style.display = 'none'; // Ocultar el contenedor del formulario
+                const formContainer = document.querySelector('.form-container');
+                    if (formContainer) {
+                        formContainer.style.display = 'none'; // Ocultar el contenedor del formulario
+                }
 
+                // const actionColumnHeaders = document.querySelectorAll('th:nth-child(8)'); // Encabezado de la columna
+                // const actionColumnCells = document.querySelectorAll('td:nth-child(8)'); // Celdas de la columna
+
+                // // Ocultar encabezado
+                // actionColumnHeaders.forEach(header => {
+                //     header.style.display = 'none'; // Ocultar el encabezado de la columna
+                // });
+
+                // // Ocultar celdas
+                // actionColumnCells.forEach(cell => {
+                //     cell.classList.add('hidden'); // Ocultar las celdas de la columna
+                // });
+
+                document.body.classList.add('viewer'); // Agregar clase al body
 
             }
         }
     }
 });
+
 
 document.getElementById("logout-button").addEventListener("click", async () => {
     try {
@@ -82,6 +101,8 @@ async function loadAvailableEquipments(currentLoanEquipments = []) {
     await loadPosapies(equipmentSelect, unavailableEquipments, currentLoanEquipments);
 }
 
+console.log("2")
+
 async function loadPrestamos() {
     const querySnapshot = await getDocs(collection(db, "prestamos"));
     const tableBody = document.querySelector("tbody");
@@ -117,6 +138,7 @@ async function loadPrestamos() {
             }
         }
 
+        // Construir la fila
         const row = `
             <tr>
                 <td>${data.fechaPrestamo.toDate().toLocaleDateString()}</td>
@@ -138,7 +160,7 @@ async function loadPrestamos() {
                 </td>
             </tr>
         `;
-        tableBody.innerHTML += row;
+        tableBody.innerHTML += row; // Agregar la fila normalmente
     }
 
     // Agregar evento de clic a los enlaces de eliminación
@@ -151,7 +173,10 @@ async function loadPrestamos() {
         });
     });
 }
-  
+
+
+
+console.log("3")
 
   document.getElementById("prestamoForm").onsubmit = async function(event) {
     event.preventDefault(); 
@@ -201,7 +226,7 @@ async function loadPrestamos() {
     }
 
     this.reset(); // Limpiar el formulario
-    loadPrestamos(); // Recargar la tabla
+    // loadPrestamos(); // Recargar la tabla
 };
 
 async function deletePrestamo(docId) {
@@ -267,7 +292,7 @@ async function deletePrestamo(docId) {
   window.openEditModal = openEditModal;
 
 
-
+  console.log("4")
 
   document.getElementById("clearButton").addEventListener("click", function() {
     // Limpiar el formulario
@@ -373,9 +398,7 @@ document.getElementById("equipmentSelect").addEventListener("change", function()
     const selectedOptions = Array.from(this.selectedOptions)
                                 .map(option => option.textContent)
                                 .filter(text => text.trim() !== "Seleccione un equipo");
-    
-    // Actualizar el contenedor con la lista de equipos seleccionados
-    // Actualizar el contenedor con la lista de equipos seleccionados
+                                
     const displayText = selectedOptions.length 
                         ? selectedOptions.join(", ") 
                         : "Ninguno";

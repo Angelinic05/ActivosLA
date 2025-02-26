@@ -145,9 +145,23 @@ import { getAuth, signOut  } from "https://www.gstatic.com/firebasejs/11.3.1/fir
         async function deleteBase(docId) {
             if (confirm("¿Estás seguro de que deseas eliminar esta base de PC?")) {
                 try {
-                    await deleteDoc(doc(db, "bases", docId)); // Eliminar el documento en Firestore
-                    alert("Base de PC eliminada correctamente.");
-                    loadBase(); // Recargar la lista de bases de PC
+                    // Obtener el documento antes de eliminarlo
+                    const docRef = doc(db, "bases", docId);
+                    const docSnap = await getDoc(docRef);
+        
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        const placa = data.placa; // Obtener la placa del documento
+        
+                        // Eliminar el documento en Firestore
+                        await deleteDoc(docRef);
+                        await logAction(`Base PC con placa ${placa} eliminada`); // Registrar la acción con la placa
+                        alert("Base de PC eliminada correctamente.");
+                        loadBase(); // Recargar la lista de bases de PC
+                    } else {
+                        console.error("No se encontró el documento de la base de PC.");
+                        alert("Error: No se encontró la base de PC.");
+                    }
                 } catch (error) {
                     console.error("Error al eliminar base de PC:", error);
                     alert("Hubo un error al eliminar la base de PC.");
@@ -198,5 +212,20 @@ import { getAuth, signOut  } from "https://www.gstatic.com/firebasejs/11.3.1/fir
                 document.getElementById("baseId").value = ""; // Limpiar el ID al cerrar el modal
                 document.getElementById("placa").value = ""; // Limpiar la placa
                 document.getElementById("base").value = ""; // Limpiar la base PC
+            }
+        }
+
+        async function logAction(action) {
+            const fecha = new Date().toLocaleDateString(); // Obtener la fecha actual
+            const historialRef = collection(db, "historial"); // Referencia a la colección de historial
+        
+            try {
+                await addDoc(historialRef, {
+                    fecha: fecha,
+                    accion: action
+                });
+                console.log("Acción registrada en el historial:", action);
+            } catch (error) {
+                console.error("Error al registrar la acción en el historial:", error);
             }
         }

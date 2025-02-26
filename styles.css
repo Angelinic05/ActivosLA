@@ -648,7 +648,10 @@ button:hover {
 }
 
 
-
+.viewer th:nth-child(8),
+.viewer td:nth-child(8) {
+    display: none; /* Ocultar la columna de acciones */
+}
 
 .estado {
   padding: 5px; 
