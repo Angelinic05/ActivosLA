@@ -113,12 +113,12 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>FECHA PRÉSTAMO</th>
+                                <th>FECHA</th>
                                 <th>NOMBRE COMPLETO</th>
                                 <th>CÉDULA</th>
                                 <th>CARGO</th>
                                 <th>EQUIPO</th>
-                                <th>FECHA DEVOLUCIÓN</th>
+                                <th>FECHA DEV.</th>
                                 <th>ESTADO</th>
                                 <th>ACCIONES</th>
                             </tr>
@@ -149,7 +149,8 @@
                             <option value="N/A">N/A (No Aplica)</option>
                             <!-- Las demás opciones se cargarán dinámicamente -->
                         </select>
-                        <div id="selectedEquipments" class="text-color">Equipos seleccionados: Ninguno</div>
+                        <label for="idNumber" class="text-color">Equipos seleccionados</label>
+                        <div id="selectedEquipments" class="options">Ninguno </div>
                         
                         <label for="returnDate" class="text-color">Fecha Devolución:</label>
                         <input type="date" id="returnDate" name="returnDate" required>
@@ -160,14 +161,16 @@
                             <option value="vencido">Vencido</option>
                             <option value="entregado">Entregado</option>
                         </select>
-                        
-                        <button class="custom-btn btn-2" type="submit">Guardar</button>
+                        <div style="display: flex; gap: 4%;">
+                            <button class="custom-btn btn-3" type="submit">Guardar</button>
+                            <!-- Agrega el botón Limpiar en tu formulario -->
+                            <button type="button" class="custom-btn btn-2" id="clearButton">Limpiar</button>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
     </section>
-    
     <script src="../search.js"></script>
     <script src="../sidebar.js"></script>
     <script type="module" src="script.js"></script>

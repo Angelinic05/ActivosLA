@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-analytics.js";
-import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, getDoc, Timestamp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js"; // Importa Timestamp
 import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
 
 const firebaseConfig = {
@@ -18,27 +18,27 @@ const auth = getAuth(app);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
 
-// auth.onAuthStateChanged(async (user) => {
-//     if (!user) {
-//         // Si no hay usuario autenticado, redirigir a la página de inicio de sesión
-//         window.location.href = 'https://angelinic05.github.io/ActivosLA/Login.html';
-//     } else {
-//         // Obtener el rol del usuario
-//         const userDoc = await getDoc(doc(db, "usuarios", user.uid));
-//         const userData = userDoc.data();
+auth.onAuthStateChanged(async (user) => {
+    if (!user) {
+        // Si no hay usuario autenticado, redirigir a la página de inicio de sesión
+        window.location.href = 'https://angelinic05.github.io/ActivosLA/Login.html';
+    } else {
+        // Obtener el rol del usuario
+        const userDoc = await getDoc(doc(db, "usuarios", user.uid));
+        const userData = userDoc.data();
 
-//         if (userData && userData.role) {
-//             // Cargar los préstamos
-//             await loadPrestamos();
+        if (userData && userData.role) {
+            // Cargar los préstamos
+            await loadPrestamos();
 
-//             if (userData.role === "viewer") {
-//                 // Ocultar botones de crear, editar y eliminar
-//                 document.querySelector('.floating-button').style.display = 'none';
-//                 console.log("El usuario es un visualizador, se oculta el botón flotante.");
-//             }
-//         }
-//     }
-// });
+            if (userData.role === "viewer") {
+                // Ocultar botones de crear, editar y eliminar
+                document.querySelector('.floating-button').style.display = 'none';
+                console.log("El usuario es un visualizador, se oculta el botón flotante.");
+            }
+        }
+    }
+});
 
 document.getElementById("logout-button").addEventListener("click", async () => {
     try {
@@ -86,46 +86,70 @@ async function loadPrestamos() {
     const tableBody = document.querySelector("tbody");
     tableBody.innerHTML = ""; // Limpiar la tabla antes de cargar nuevos datos
   
+    const today = new Date(); // Obtener la fecha actual
+
     for (const doc of querySnapshot.docs) {
-      const data = doc.data();
-      const equiposPlacas = data.equipos.map(equipId => 
-        equipmentsPlacasMapping[equipId] ? equipmentsPlacasMapping[equipId] : equipId
-      ).join(", ");
-  
-      const row = `
-        <tr>
-          <td>${data.fechaPrestamo.toDate().toLocaleDateString()}</td>
-          <td>${data.nombre}</td>
-          <td>${data.cedula}</td>
-          <td>${data.cargo}</td>
-          <td>${equiposPlacas}</td>
-          <td>${data.fechaDevolucion ? new Date(data.fechaDevolucion).toLocaleDateString() : ''}</td>
-          <td>${data.estado}</td>
-          <td>
-            <div class="icons">
-              <a href="#" class="action-icon" title="Editar" onclick='openEditModal("${doc.id}", ${JSON.stringify(data).replace(/"/g, "&quot;")})'>
-                <i class="bx bx-edit"></i>
-              </a>
-              <a href="#" class="action-icon delete" title="Eliminar" data-id="${doc.id}">
-                <i class="bx bx-trash"></i>
-              </a>
-            </div>
-          </td>
-        </tr>
-      `;
-      tableBody.innerHTML += row;
+        const data = doc.data();
+        const equiposPlacas = data.equipos.map(equipId => 
+            equipmentsPlacasMapping[equipId] ? equipmentsPlacasMapping[equipId] : equipId
+        ).join(", ");
+
+        // Verificar si la fecha de devolución ha pasado y el estado es "pendiente"
+        let fechaDevolucion;
+        if (data.fechaDevolucion) {
+            // Verificar si es un Timestamp
+            if (data.fechaDevolucion instanceof Timestamp) {
+                fechaDevolucion = data.fechaDevolucion.toDate(); // Convertir a objeto Date
+            } else {
+                // Intentar convertir de cadena a objeto Date
+                fechaDevolucion = new Date(data.fechaDevolucion);
+                if (isNaN(fechaDevolucion.getTime())) {
+                    console.error("Fecha de devolución no válida:", data.fechaDevolucion);
+                    fechaDevolucion = null; // Establecer a null si no es válida
+                }
+            }
+
+            if (data.estado === "pendiente" && fechaDevolucion && fechaDevolucion < today) {
+                // Actualizar el estado a "vencido"
+                await updateDoc(doc.ref, { estado: "vencido" });
+                data.estado = "vencido"; // Actualizar el estado en la variable local para mostrar en la tabla
+            }
+        }
+
+        const row = `
+            <tr>
+                <td>${data.fechaPrestamo.toDate().toLocaleDateString()}</td>
+                <td>${data.nombre}</td>
+                <td>${data.cedula}</td>
+                <td>${data.cargo}</td>
+                <td>${equiposPlacas}</td>
+                <td>${fechaDevolucion ? fechaDevolucion.toLocaleDateString() : ''}</td>
+                <td class="estado ${data.estado}">${data.estado}</td> 
+                <td>
+                    <div class="icons">
+                        <a href="#" class="action-icon edit" title="Editar" onclick='openEditModal("${doc.id}", ${JSON.stringify(data).replace(/"/g, "&quot;")})'>
+                            <i class="bx bx-edit"></i>
+                        </a>
+                        <a href="#" class="action-icon delete" title="Eliminar" data-id="${doc.id}">
+                            <i class="bx bx-trash"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        `;
+        tableBody.innerHTML += row;
     }
-  
+
     // Agregar evento de clic a los enlaces de eliminación
     const deleteButtons = document.querySelectorAll('.delete');
     deleteButtons.forEach(button => {
-      button.addEventListener('click', function(event) {
-        event.preventDefault();
-        const docId = this.getAttribute('data-id');
-        deletePrestamo(docId);
-      });
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            const docId = this.getAttribute('data-id');
+            deletePrestamo(docId);
+        });
     });
-  }
+}
   
 
   document.getElementById("prestamoForm").onsubmit = async function(event) {
@@ -139,7 +163,17 @@ async function loadPrestamos() {
     // Obtener los IDs de los equipos seleccionados
     const equipmentIds = Array.from(document.getElementById("equipmentSelect").selectedOptions).map(option => option.value);
     
-    const returnDate = document.getElementById("returnDate").value;
+    const returnDateInput = document.getElementById("returnDate").value; // Obtener la fecha de devolución como string
+    const returnDate = new Date(returnDateInput); // Convertir a objeto Date
+    const today = new Date(); // Fecha actual
+    today.setHours(0, 0, 0, 0); // Establecer la hora a 00:00:00 para la comparación
+
+    // Validar que la fecha de devolución no sea menor a la fecha actual
+    if (returnDate < today) {
+        alert("La fecha de devolución no puede ser menor a la fecha actual.");
+        return; // Salir de la función si la validación falla
+    }
+
     const status = document.getElementById("status").value;
 
     if (prestamoId) {
@@ -166,7 +200,7 @@ async function loadPrestamos() {
     }
 
     this.reset(); // Limpiar el formulario
-    window.location.reload(); // Recargar la página
+    loadPrestamos(); // Recargar la tabla
 };
 
 async function deletePrestamo(docId) {
@@ -185,23 +219,40 @@ async function deletePrestamo(docId) {
   
   // Si se abre el modal para editar, recargamos el select incluyendo los equipos ya asignados al préstamo:
   async function openEditModal(docId, data) {
-
     document.getElementById("prestamoId").value = docId;
     document.getElementById("fullName").value = data.nombre || "";
     document.getElementById("idNumber").value = data.cedula || "";
     document.getElementById("jobTitle").value = data.cargo || "";
-    document.getElementById("returnDate").value = data.fechaDevolucion 
-        ? new Date(data.fechaDevolucion).toISOString().split('T')[0] 
-        : "";
+
+    // Manejo de la fecha de devolución
+    let fechaDevolucion;
+    if (data.fechaDevolucion) {
+        // Verificar si es un Timestamp
+        if (data.fechaDevolucion instanceof Timestamp) {
+            fechaDevolucion = data.fechaDevolucion.toDate(); // Convertir a objeto Date
+        } else {
+            // Intentar convertir de cadena a objeto Date
+            fechaDevolucion = new Date(data.fechaDevolucion);
+        }
+    }
+
+    // Verificar si la fecha de devolución es válida
+    if (fechaDevolucion && !isNaN(fechaDevolucion.getTime())) {
+        document.getElementById("returnDate").value = fechaDevolucion.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+    } else {
+        console.error("Fecha de devolución no válida:", data.fechaDevolucion);
+        document.getElementById("returnDate").value = ""; // Limpiar el campo si no es válida
+    }
+
     document.getElementById("status").value = data.estado || "";
-    
+
     // Cargar el select de equipos disponibles, permitiendo incluir los que ya se asignaron en este préstamo
     await loadAvailableEquipments(data.equipos || []);
     
     // Marcar los equipos asignados previamente en el select
     const equipmentSelect = document.getElementById("equipmentSelect");
     for (let option of equipmentSelect.options) {
-      option.selected = data.equipos && data.equipos.includes(option.value);
+        option.selected = data.equipos && data.equipos.includes(option.value);
     }
     
     // Si utilizas el contenedor para mostrar los equipos seleccionados, actualízalo:
@@ -210,10 +261,26 @@ async function deletePrestamo(docId) {
                                 .filter(text => text.trim() !== "Seleccione un equipo");
     document.getElementById("selectedEquipments").textContent = 
         "Equipos seleccionados: " + (selectedOptions.length ? selectedOptions.join(", ") : "Ninguno");
-  }
+}
+
   window.openEditModal = openEditModal;
 
 
+
+
+  document.getElementById("clearButton").addEventListener("click", function() {
+    // Limpiar el formulario
+    document.getElementById("prestamoForm").reset(); // Restablecer todos los campos del formulario
+
+    // Opcional: Si deseas limpiar también el select de equipos
+    const equipmentSelect = document.getElementById("equipmentSelect");
+    for (let option of equipmentSelect.options) {
+        option.selected = false; // Limpiar selección de equipos
+    }
+    
+    // Limpiar el contenedor de equipos seleccionados
+    document.getElementById("selectedEquipments").textContent = "Equipos seleccionados: Ninguno";
+});
 
 document.getElementById("equipmentSearch").addEventListener("keyup", function() {
     const filter = this.value.toLowerCase();
@@ -307,10 +374,11 @@ document.getElementById("equipmentSelect").addEventListener("change", function()
                                 .filter(text => text.trim() !== "Seleccione un equipo");
     
     // Actualizar el contenedor con la lista de equipos seleccionados
+    // Actualizar el contenedor con la lista de equipos seleccionados
     const displayText = selectedOptions.length 
                         ? selectedOptions.join(", ") 
                         : "Ninguno";
-    
+
     document.getElementById("selectedEquipments").textContent = "Equipos seleccionados: " + displayText;
   });
   

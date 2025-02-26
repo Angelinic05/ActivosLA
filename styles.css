@@ -13,11 +13,10 @@ body{
   background-color: #000033;
 } */
 :root {
-    --background: rgb(71, 71, 71);
-    --gray: #2c2c2c;
-    --glow-violet: #1a1a1a;
+    --background: #1c1c1c;
+    --gray: #282828;
+    --glow-violet: #1d1d1e;
     --glow-object-grad: #ffd000;
-    /* --glow-violet-c: #801fff; */
     --glow-violet-c: #9e55fa;
     --blue: #0096fe;
     --green: #72dba3;
@@ -399,7 +398,7 @@ table {
 }
 
 td{
-    text-align: left; /* Alinear texto a la izquierda */
+    text-align: center; /* Alinear texto a la izquierda */
 }
 
 th {
@@ -422,10 +421,18 @@ tr:hover {
 }
 
 .action-icon {
-    color: var(--glow-violet-c); /* Color del ícono */
+
     font-size: 20px; /* Tamaño del ícono */
     text-decoration: none; /* Sin subrayado */
     transition: color 0.3s; /* Transición para el color */
+}
+
+.edit{
+  color: #339bf4; /* Color del ícono */
+} 
+
+.delete{
+  color: #fd4b6d; /* Color del ícono */
 }
 
 .action-icon:hover {
@@ -445,16 +452,14 @@ tr:hover {
     top: 0;
     width: 100%; /* Ancho completo */
     height: 100%; /* Alto completo */
-    background-color: rgb(0,0,0); /* Color de fondo negro */
-    background-color: rgba(0,0,0,0.7); /* Fondo negro con opacidad */
+    background-color: rgba(0, 0, 0, 0.534); /* Fondo negro con opacidad */
 }
 
 .modal-content {
     border-radius: 2%;
-    background-color: #fefefe;
+    background-color: #3e3e40;
     margin: 8% auto; 
-    padding: 30px;
-    border: 1px solid #a8a8a8;
+    padding: 40px;
     width: 80%; /* Ancho del modal */
     max-width: 500px; /* Ancho máximo */
     max-height: 600px; /* Ancho máximo */
@@ -488,11 +493,12 @@ select {
   padding: 10px;
   margin-top: 5px;
   margin-bottom: 15px;
-  border: 1px solid #ccc;
+  border-style: none;
   border-radius: 4px;
   transition: border-color 0.3s; /* Agrega una transición suave */
   appearance: none; /* Elimina el estilo predeterminado del navegador */
-  background-color: white; /* Asegúrate de que el fondo sea blanco */
+  background-color: #303032; /* Asegúrate de que el fondo sea blanco */
+  color: white;
 }
 
 select:hover {
@@ -509,8 +515,10 @@ input {
     padding: 10px;
     margin-top: 5px;
     /* margin-bottom: 15px; */
-    border: 1px solid #ccc;
+    background-color: #313133;
+    color: #ffffff;
     border-radius: 4px;
+    border-style: none;
 }
 
 input:focus{
@@ -553,18 +561,29 @@ input:focus{
   background: rgb(96,9,240);
   background: linear-gradient(0deg, rgba(96,9,240,1) 0%, rgba(129,5,240,1) 100%);
   border: none;
-  
 }
-.btn-2:before {
+
+.btn-3 {
+  background: #73cfff;
+  background: linear-gradient(0deg, #5feda1, #019d4a);
+  border: none;
+}
+
+
+.btn-2:before,
+.btn-3:before {
   height: 0%;
   width: 2px;
 }
-.btn-2:hover {
-  box-shadow:  4px 4px 6px 0 rgba(255,255,255,.5),
-              -4px -4px 6px 0 rgba(116, 125, 136, .5), 
+.btn-2:hover,
+.btn-3:hover {
+  box-shadow:  
+  /* 4px 4px 6px 0 rgba(255,255,255,.5), */
+              /* -4px -4px 6px 0 rgba(116, 125, 136, .5),  */
     inset -4px -4px 6px 0 rgba(255,255,255,.2),
     inset 4px 4px 6px 0 rgba(0, 0, 0, .4);
 }
+
 
 button:hover {
     background-color: #6f00ff; /* Color más oscuro al pasar el mouse */
@@ -583,13 +602,13 @@ button:hover {
   height: 150px;
   max-height: 200px; /* Establecer una altura máxima para permitir el desplazamiento */
   overflow-y: auto; /* Habilitar el desplazamiento vertical */
-  border: 1px solid #ccc; /* Estilo del borde */
   border-radius: 4px; /* Bordes redondeados */
   padding: 5px; /* Espaciado interno */
+  color: #d0d0d0; 
 }
 
 .text-color{
-   color: var(--text); 
+   color: #d0d0d0; 
 }
 
 .container {
@@ -610,14 +629,53 @@ button:hover {
   width: 500px; 
   padding: 2%;
   overflow-y: auto;
+  height: 100%;
 }
 
 .table-pres, 
 .form-container{
   border-radius: 15px;
-  background-color: #3a3a3a;
-  height: 100%;
+  background-color: var(--glow-violet);
+  box-shadow: 0 0 10px #11101d;
 }
+
+.options{
+  background-color: #313133; 
+  height: fit-content; 
+  border-radius: 4px;
+  padding: 2%;
+  color: #686868;
+}
+
+
+
+
+.estado {
+  padding: 5px; 
+  border-radius: 4px; 
+  color: white; 
+  font-weight: 900; 
+  align-items: center;
+}
+
+.celda-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.estado.pendiente {
+  color: #fcb525; /* Color para estado pendiente */
+}
+
+.estado.entregado {
+  color: #5feda1; /* Color para estado entregado */
+}
+
+.estado.vencido {
+  color: #fd4b6d; /* Color para estado vencido */
+}
+
 
 
 @media (max-width: 1100px) {
@@ -717,25 +775,24 @@ button:hover {
     
     .container {
       flex-direction: column;
-      gap: 1%;
+      gap: 2%;
     }
 
     .table-pres{
       padding: 5% 2% 2% 2%;
       width: 100%;
       overflow-x: auto;
+      height: fit-content;
+      max-height: 38%;
     }
     
     .form-container {
       width: 100%; 
       overflow-y: auto;
       padding:  5%;
-    }
-    
-    .table-pres, 
-    .form-container{
       height: 48%;
     }
+    
     
     label, .text-color{
       color: var(--text); 

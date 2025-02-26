@@ -107,50 +107,55 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
             });
         }
 
-        document.getElementById("keyboardForm").onsubmit = async function(event) {
-            event.preventDefault(); // Evitar el envío del formulario
-
-            const docId = document.getElementById("keyboardId").value; // Obtener el ID del teclado
-            const placa = document.getElementById("placa").value;
-            const marca = document.getElementById("marca").value;
-            const tipo = document.getElementById("tipo").value;
-            const serial = document.getElementById("serial").value;
-
-            if (docId) {
-                // Actualizar el teclado en Firestore
-                await updateDoc(doc(db, "teclados", docId), {
-                    placa: placa,
-                    marca: marca,
-                    tipo: tipo,
-                    serial: serial
+        document.getElementById("prestamoForm").onsubmit = async function(event) {
+            event.preventDefault(); 
+        
+            const prestamoId = document.getElementById("prestamoId").value; 
+            const fullName = document.getElementById("fullName").value;
+            const idNumber = document.getElementById("idNumber").value;
+            const jobTitle = document.getElementById("jobTitle").value;
+        
+            // Obtener los IDs de los equipos seleccionados
+            const equipmentIds = Array.from(document.getElementById("equipmentSelect").selectedOptions).map(option => option.value);
+            
+            const returnDate = new Date(document.getElementById("returnDate").value);
+            const today = new Date(); // Fecha actual
+            today.setHours(0, 0, 0, 0); // Establecer la hora a 00:00:00 para la comparación
+        
+            // Validar que la fecha de devolución no sea menor a la fecha actual
+            if (returnDate < today) {
+                alert("La fecha de devolución no puede ser menor a la fecha actual.");
+                return; // Salir de la función si la validación falla
+            }
+        
+            const status = document.getElementById("status").value;
+        
+            if (prestamoId) {
+                // Actualizar el préstamo existente
+                await updateDoc(doc(db, "prestamos", prestamoId), {
+                    nombre: fullName,
+                    cedula: idNumber,
+                    cargo: jobTitle,
+                    equipos: equipmentIds, // Guardar como array
+                    fechaDevolucion: returnDate,
+                    estado: status
                 });
             } else {
-                // Agregar un nuevo teclado
-                await addDoc(collection(db, "teclados"), {
-                    placa: placa,
-                    marca: marca,
-                    tipo: tipo,
-                    serial: serial
+                // Agregar un nuevo préstamo
+                await addDoc(collection(db, "prestamos"), {
+                    fechaPrestamo: new Date(),
+                    nombre: fullName,
+                    cedula: idNumber,
+                    cargo: jobTitle,
+                    equipos: equipmentIds, // Guardar como array
+                    fechaDevolucion: returnDate,
+                    estado: status
                 });
             }
-
-            modal.style.display = "none"; // Cerrar el modal
+        
             this.reset(); // Limpiar el formulario
-            loadKeyboards(); // Recargar la tabla
-        }
-
-        async function deleteKeyboard(docId) {
-            if (confirm("¿Estás seguro de que deseas eliminar este teclado?")) {
-                try {
-                    await deleteDoc(doc(db, "teclados", docId)); // Eliminar el documento en Firestore
-                    alert("Teclado eliminado correctamente.");
-                    loadKeyboards(); // Recargar la lista de teclados
-                } catch (error) {
-                    console.error("Error al eliminar teclado:", error);
-                    alert("Hubo un error al eliminar el teclado.");
-                }
-            }
-        }
+            loadPrestamos(); // Recargar la tabla
+        };
 
         function openEditModal(docId, data) {
             // Abrir el modal
