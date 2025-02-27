@@ -118,25 +118,27 @@ import { getAuth, signOut  } from "https://www.gstatic.com/firebasejs/11.3.1/fir
 
         document.getElementById("baseForm").onsubmit = async function(event) {
             event.preventDefault(); // Evitar el envío del formulario
-
+        
             const docId = document.getElementById("baseId").value; // Obtener el ID de la base PC
             const placa = document.getElementById("placa").value;
             const base = document.getElementById("base").value;
-
+        
             if (docId) {
                 // Actualizar la base PC en Firestore
                 await updateDoc(doc(db, "bases", docId), {
                     placa: placa,
                     base: base
                 });
+                await logAction(`Base PC con placa ${placa} actualizada`); // Registrar la acción en el historial
             } else {
                 // Agregar una nueva base PC
                 await addDoc(collection(db, "bases"), {
                     placa: placa,
                     base: base
                 });
+                await logAction(`Base PC con placa ${placa} agregada`); // Registrar la acción en el historial
             }
-
+        
             modal.style.display = "none"; // Cerrar el modal
             this.reset(); // Limpiar el formulario
             loadBase(); // Recargar la tabla
@@ -216,12 +218,16 @@ import { getAuth, signOut  } from "https://www.gstatic.com/firebasejs/11.3.1/fir
         }
 
         async function logAction(action) {
-            const fecha = new Date().toLocaleDateString(); // Obtener la fecha actual
+            const now = new Date(); // Obtener la fecha y hora actual
+            const fecha = now.toLocaleDateString(); // Obtener la fecha
+            const hora = now.toLocaleTimeString(); // Obtener la hora
+        
             const historialRef = collection(db, "historial"); // Referencia a la colección de historial
         
             try {
                 await addDoc(historialRef, {
                     fecha: fecha,
+                    hora: hora, // Agregar la hora al documento
                     accion: action
                 });
                 console.log("Acción registrada en el historial:", action);

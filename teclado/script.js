@@ -107,55 +107,64 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
             });
         }
 
-        document.getElementById("prestamoForm").onsubmit = async function(event) {
-            event.preventDefault(); 
+        document.getElementById("keyboardForm").onsubmit = async function(event) {
+            event.preventDefault(); // Evitar el envío del formulario
         
-            const prestamoId = document.getElementById("prestamoId").value; 
-            const fullName = document.getElementById("fullName").value;
-            const idNumber = document.getElementById("idNumber").value;
-            const jobTitle = document.getElementById("jobTitle").value;
+            const docId = document.getElementById("keyboardId").value; // Obtener el ID del teclado
+            const placa = document.getElementById("placa").value;
+            const marca = document.getElementById("marca").value;
+            const tipo = document.getElementById("tipo").value;
+            const serial = document.getElementById("serial").value;
         
-            // Obtener los IDs de los equipos seleccionados
-            const equipmentIds = Array.from(document.getElementById("equipmentSelect").selectedOptions).map(option => option.value);
-            
-            const returnDate = new Date(document.getElementById("returnDate").value);
-            const today = new Date(); // Fecha actual
-            today.setHours(0, 0, 0, 0); // Establecer la hora a 00:00:00 para la comparación
-        
-            // Validar que la fecha de devolución no sea menor a la fecha actual
-            if (returnDate < today) {
-                alert("La fecha de devolución no puede ser menor a la fecha actual.");
-                return; // Salir de la función si la validación falla
-            }
-        
-            const status = document.getElementById("status").value;
-        
-            if (prestamoId) {
-                // Actualizar el préstamo existente
-                await updateDoc(doc(db, "prestamos", prestamoId), {
-                    nombre: fullName,
-                    cedula: idNumber,
-                    cargo: jobTitle,
-                    equipos: equipmentIds, // Guardar como array
-                    fechaDevolucion: returnDate,
-                    estado: status
+            if (docId) {
+                // Actualizar el teclado en Firestore
+                await updateDoc(doc(db, "teclados", docId), {
+                    placa: placa,
+                    marca: marca,
+                    tipo: tipo,
+                    serial: serial
                 });
+                await logAction(`Teclado con placa ${placa} actualizado`); // Registrar la acción
             } else {
-                // Agregar un nuevo préstamo
-                await addDoc(collection(db, "prestamos"), {
-                    fechaPrestamo: new Date(),
-                    nombre: fullName,
-                    cedula: idNumber,
-                    cargo: jobTitle,
-                    equipos: equipmentIds, // Guardar como array
-                    fechaDevolucion: returnDate,
-                    estado: status
+                // Agregar un nuevo teclado
+                await addDoc(collection(db, "teclados"), {
+                    placa: placa,
+                    marca: marca,
+                    tipo: tipo,
+                    serial: serial
                 });
+                await logAction(`Teclado con placa ${placa} agregado`); // Registrar la acción
             }
         
+            modal.style.display = "none"; // Cerrar el modal
             this.reset(); // Limpiar el formulario
-            loadPrestamos(); // Recargar la tabla
-        };
+            loadKeyboards(); // Recargar la tabla
+        }
+
+        async function deleteKeyboard(docId) {
+            if (confirm("¿Estás seguro de que deseas eliminar este teclado?")) {
+                try {
+                    const docRef = doc(db, "teclados", docId);
+                    const docSnap = await getDoc(docRef);
+        
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        const placa = data.placa; // Obtener la placa del teclado
+        
+                        await deleteDoc(docRef); // Eliminar el documento en Firestore
+                        await logAction(`Teclado con placa ${placa} eliminado`); // Registrar la acción
+                        alert("Teclado eliminado correctamente.");
+                        loadKeyboards(); // Recargar la lista de teclados
+                    } else {
+                        console.error("No se encontró el documento del teclado.");
+                        alert("Error: No se encontró el teclado.");
+                    }
+                } catch (error) {
+                    console.error("Error al eliminar teclado:", error);
+                    alert("Hubo un error al eliminar el teclado.");
+                }
+            }
+        }
 
         function openEditModal(docId, data) {
             // Abrir el modal
@@ -208,5 +217,24 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
                 document.getElementById("marca").value = ""; // Limpiar la marca
                 document.getElementById("tipo").value = "inalambrico"; // Valor por defecto
                 document.getElementById("serial").value = ""; // Limpiar el serial
+            }
+        }
+
+        async function logAction(action) {
+            const now = new Date(); // Obtener la fecha y hora actual
+            const fecha = now.toLocaleDateString(); // Obtener la fecha
+            const hora = now.toLocaleTimeString(); // Obtener la hora
+        
+            const historialRef = collection(db, "historial"); // Referencia a la colección de historial
+        
+            try {
+                await addDoc(historialRef, {
+                    fecha: fecha,
+                    hora: hora, // Agregar la hora al documento
+                    accion: action
+                });
+                console.log("Acción registrada en el historial:", action);
+            } catch (error) {
+                console.error("Error al registrar la acción en el historial:", error);
             }
         }

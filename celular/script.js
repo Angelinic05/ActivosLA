@@ -107,13 +107,13 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
 
         document.getElementById("cellphoneForm").onsubmit = async function(event) {
             event.preventDefault(); // Evitar el envío del formulario
-
+        
             const docId = document.getElementById("cellphoneId").value; // Obtener el ID del celular
             const placa = document.getElementById("placa").value;
             const marca = document.getElementById("marca").value;
             const modelo = document.getElementById("modelo").value;
             const serial = document.getElementById("serial").value;
-
+        
             if (docId) {
                 // Actualizar el celular en Firestore
                 await updateDoc(doc(db, "celulares", docId), {
@@ -122,6 +122,7 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
                     modelo: modelo,
                     serial: serial
                 });
+                await logAction(`Celular con placa ${placa} actualizado`); // Registrar la acción
             } else {
                 // Agregar un nuevo celular
                 await addDoc(collection(db, "celulares"), {
@@ -130,8 +131,9 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
                     modelo: modelo,
                     serial: serial
                 });
+                await logAction(`Celular con placa ${placa} agregado`); // Registrar la acción
             }
-
+        
             modal.style.display = "none"; // Cerrar el modal
             this.reset(); // Limpiar el formulario
             loadCellphones(); // Recargar la tabla
@@ -140,9 +142,21 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
         async function deleteCellphone(docId) {
             if (confirm("¿Estás seguro de que deseas eliminar este celular?")) {
                 try {
-                    await deleteDoc(doc(db, "celulares", docId)); // Eliminar el documento en Firestore
-                    alert("Celular eliminado correctamente.");
-                    loadCellphones(); // Recargar la lista de celulares
+                    const docRef = doc(db, "celulares", docId);
+                    const docSnap = await getDoc(docRef);
+        
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        const placa = data.placa; // Obtener la placa del celular
+        
+                        await deleteDoc(docRef); // Eliminar el documento en Firestore
+                        await logAction(`Celular con placa ${placa} eliminado`); // Registrar la acción
+                        alert("Celular eliminado correctamente.");
+                        loadCellphones(); // Recargar la lista de celulares
+                    } else {
+                        console.error("No se encontró el documento del celular.");
+                        alert("Error: No se encontró el celular.");
+                    }
                 } catch (error) {
                     console.error("Error al eliminar celular:", error);
                     alert("Hubo un error al eliminar el celular.");
@@ -201,5 +215,23 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
                 document.getElementById("marca").value = ""; // Limpiar la marca
                 document.getElementById("modelo").value = ""; // Limpiar el modelo
                 document.getElementById("serial").value = ""; // Limpiar el serial
+            }
+        }
+        async function logAction(action) {
+            const now = new Date(); // Obtener la fecha y hora actual
+            const fecha = now.toLocaleDateString(); // Obtener la fecha
+            const hora = now.toLocaleTimeString(); // Obtener la hora
+        
+            const historialRef = collection(db, "historial"); // Referencia a la colección de historial
+        
+            try {
+                await addDoc(historialRef, {
+                    fecha: fecha,
+                    hora: hora, // Agregar la hora al documento
+                    accion: action
+                });
+                console.log("Acción registrada en el historial:", action);
+            } catch (error) {
+                console.error("Error al registrar la acción en el historial:", error);
             }
         }

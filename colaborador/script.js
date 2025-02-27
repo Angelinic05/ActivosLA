@@ -396,9 +396,8 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
 
 
         document.getElementById("collaboratorForm").onsubmit = async function(event) {
-
             event.preventDefault(); 
-
+        
             const docId = document.getElementById("collaboratorId").value; // Obtener el ID del colaborador
             const fullName = document.getElementById("fullName").value;
             const idNumber = document.getElementById("idNumber").value;
@@ -406,57 +405,71 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
             const computerId = document.getElementById("computerSelect").value; // Obtener el ID del computador seleccionado
             const keyboardId = document.getElementById("keyboardSelect").value; // Obtener el ID del teclado seleccionado
             const mouseId = document.getElementById("mouseSelect").value; // Obtener el ID del mouse seleccionado
-            const celularId = document.getElementById("celularSelect").value; // Obtener el ID del mouse seleccionado
+            const celularId = document.getElementById("celularSelect").value; // Obtener el ID del celular seleccionado
             const baseId = document.getElementById("baseSelect").value;
             const posapiesId = document.getElementById("posapiesSelect").value;
-
+        
             if (docId) {
-    // Actualizar el colaborador en Firestore
+                // Actualizar el colaborador en Firestore
                 await updateDoc(doc(db, "colaboradores", docId), {
                     nombre: fullName,
                     cedula: idNumber,
                     area: area,
-                    computerId: computerId, // Guardar el ID del computador asignado
-                    keyboardId: keyboardId, // Guardar el ID del teclado asignado
-                    mouseId: mouseId, // Guardar el ID del mouse asignado
-                    celularId: celularId, // Guardar el ID del celular asignado
+                    computerId: computerId,
+                    keyboardId: keyboardId,
+                    mouseId: mouseId,
+                    celularId: celularId,
                     baseId: baseId,
-                    posapiesId: posapiesId // Guardar el ID de la base asignada
+                    posapiesId: posapiesId
                 });
+                await logAction(`Colaborador ${fullName} actualizado`); // Registrar la acción en el historial
             } else {
                 // Agregar un nuevo colaborador
                 await addDoc(collection(db, "colaboradores"), {
                     nombre: fullName,
                     cedula: idNumber,
                     area: area,
-                    computerId: computerId, // Guardar el ID del computador asignado
-                    keyboardId: keyboardId, // Guardar el ID del teclado asignado
-                    mouseId: mouseId, // Guardar el ID del mouse asignado
-                    celularId: celularId, // Guardar el ID del celular asignado
-                    baseId: baseId, // Guardar el ID de la base asignada
-                    posapiesId: posapiesId // Guardar el ID de la base asignada
+                    computerId: computerId,
+                    keyboardId: keyboardId,
+                    mouseId: mouseId,
+                    celularId: celularId,
+                    baseId: baseId,
+                    posapiesId: posapiesId
                 });
+                await logAction(`Colaborador ${fullName} agregado`); // Registrar la acción en el historial
             }
-
+        
             modal.style.display = "none"; // Cerrar el modal
             this.reset(); // Limpiar el formulario
             loadCollaborators(); // Recargar la tabla
-            location.reload();
         }
 
         async function deleteCollaborator(docId) {
             if (confirm("¿Estás seguro de que deseas eliminar este colaborador?")) {
                 try {
-                    await deleteDoc(doc(db, "colaboradores", docId)); // Eliminar el documento en Firestore
-                    alert("Colaborador eliminado correctamente.");
-                    loadCollaborators(); // Recargar la lista de colaboradores
+                    // Obtener el documento antes de eliminarlo
+                    const docRef = doc(db, "colaboradores", docId);
+                    const docSnap = await getDoc(docRef);
+        
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        const fullName = data.nombre; // Obtener el nombre del colaborador
+        
+                        // Eliminar el documento en Firestore
+                        await deleteDoc(docRef);
+                        await logAction(`Colaborador ${fullName} eliminado`); // Registrar la acción con el nombre
+                        alert("Colaborador eliminado correctamente.");
+                        loadCollaborators(); // Recargar la lista de colaboradores
+                    } else {
+                        console.error("No se encontró el documento del colaborador.");
+                        alert("Error: No se encontró el colaborador.");
+                    }
                 } catch (error) {
                     console.error("Error al eliminar colaborador:", error);
                     alert("Hubo un error al eliminar el colaborador.");
                 }
             }
         }
-
         function openEditModal(docId, data) {
             console.log(data)
     // Abrir el modal
@@ -539,5 +552,24 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
                 document.getElementById("celularSelect").value = "";
                 document.getElementById("baseSelect").value = "";
                 document.getElementById("posapiesSelect").value = "";
+            }
+        }
+
+        async function logAction(action) {
+            const now = new Date(); // Obtener la fecha y hora actual
+            const fecha = now.toLocaleDateString(); // Obtener la fecha
+            const hora = now.toLocaleTimeString(); // Obtener la hora
+        
+            const historialRef = collection(db, "historial"); // Referencia a la colección de historial
+        
+            try {
+                await addDoc(historialRef, {
+                    fecha: fecha,
+                    hora: hora, // Agregar la hora al documento
+                    accion: action
+                });
+                console.log("Acción registrada en el historial:", action);
+            } catch (error) {
+                console.error("Error al registrar la acción en el historial:", error);
             }
         }

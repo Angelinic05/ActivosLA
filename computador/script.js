@@ -106,46 +106,62 @@
     }
 
     document.getElementById("computerForm").onsubmit = async function(event) {
-    event.preventDefault(); // Evitar el envío del formulario
-
-    const docId = document.getElementById("computerId").value; // Obtener el ID del computador
-    const placa = document.getElementById("placa").value;
-    const marca = document.getElementById("marca").value;
-    const tipo = document.getElementById("tipo").value;
-    const serial = document.getElementById("serial").value;
-    const sistemaOperativo = document.getElementById("sistemaOperativo").value;
-
-    if (docId) {
-    // Actualizar el computador en Firestore
-    await updateDoc(doc(db, "computadores", docId), {
-        placa: placa,
-        marca: marca,
-        tipo: tipo,
-        serial: serial,
-        sistemaOperativo: sistemaOperativo
-    });
-    } else {
-    // Agregar un nuevo computador
-    await addDoc(collection(db, "computadores"), {
-        placa: placa,
-        marca: marca,
-        tipo: tipo,
-        serial: serial,
-        sistemaOperativo: sistemaOperativo
-    });
-    }
-
-    modal.style.display = "none"; // Cerrar el modal
-    this.reset(); // Limpiar el formulario
-    loadComputers(); // Recargar la tabla
+        event.preventDefault(); // Evitar el envío del formulario
+    
+        const docId = document.getElementById("computerId").value; // Obtener el ID del computador
+        const placa = document.getElementById("placa").value;
+        const marca = document.getElementById("marca").value;
+        const tipo = document.getElementById("tipo").value;
+        const serial = document.getElementById("serial").value;
+        const sistemaOperativo = document.getElementById("sistemaOperativo").value;
+    
+        if (docId) {
+            // Actualizar el computador en Firestore
+            await updateDoc(doc(db, "computadores", docId), {
+                placa: placa,
+                marca: marca,
+                tipo: tipo,
+                serial: serial,
+                sistemaOperativo: sistemaOperativo
+            });
+            await logAction(`Computador con placa ${placa} actualizado`); // Registrar la acción en el historial
+        } else {
+            // Agregar un nuevo computador
+            await addDoc(collection(db, "computadores"), {
+                placa: placa,
+                marca: marca,
+                tipo: tipo,
+                serial: serial,
+                sistemaOperativo: sistemaOperativo
+            });
+            await logAction(`Computador con placa ${placa} agregado`); // Registrar la acción en el historial
+        }
+    
+        modal.style.display = "none"; // Cerrar el modal
+        this.reset(); // Limpiar el formulario
+        loadComputers(); // Recargar la tabla
     }
 
     async function deleteComputer(docId) {
         if (confirm("¿Estás seguro de que deseas eliminar este computador?")) {
             try {
-                await deleteDoc(doc(db, "computadores", docId)); // Eliminar el documento en Firestore
-                alert("Computador eliminado correctamente.");
-                loadComputers(); // Recargar la lista de computadores
+                // Obtener el documento antes de eliminarlo
+                const docRef = doc(db, "computadores", docId);
+                const docSnap = await getDoc(docRef);
+    
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    const placa = data.placa; // Obtener la placa del computador
+    
+                    // Eliminar el documento en Firestore
+                    await deleteDoc(docRef);
+                    await logAction(`Computador con placa ${placa} eliminado`); // Registrar la acción con la placa
+                    alert("Computador eliminado correctamente.");
+                    loadComputers(); // Recargar la lista de computadores
+                } else {
+                    console.error("No se encontró el documento del computador.");
+                    alert("Error: No se encontró el computador.");
+                }
             } catch (error) {
                 console.error("Error al eliminar computador:", error);
                 alert("Hubo un error al eliminar el computador.");
@@ -213,3 +229,22 @@
             document.getElementById("sistemaOperativo").value = ""; // Limpiar el sistema operativo
         }
     }
+
+        async function logAction(action) {
+            const now = new Date(); // Obtener la fecha y hora actual
+            const fecha = now.toLocaleDateString(); // Obtener la fecha
+            const hora = now.toLocaleTimeString(); // Obtener la hora
+        
+            const historialRef = collection(db, "historial"); // Referencia a la colección de historial
+        
+            try {
+                await addDoc(historialRef, {
+                    fecha: fecha,
+                    hora: hora, // Agregar la hora al documento
+                    accion: action
+                });
+                console.log("Acción registrada en el historial:", action);
+            } catch (error) {
+                console.error("Error al registrar la acción en el historial:", error);
+            }
+        }

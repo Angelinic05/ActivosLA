@@ -108,13 +108,13 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
 
         document.getElementById("mouseForm").onsubmit = async function(event) {
             event.preventDefault(); // Evitar el envío del formulario
-
+        
             const docId = document.getElementById("mouseId").value; // Obtener el ID del mouse
             const placa = document.getElementById("placa").value;
             const marca = document.getElementById("marca").value;
             const tipo = document.getElementById("tipo").value;
             const serial = document.getElementById("serial").value;
-
+        
             if (docId) {
                 // Actualizar el mouse en Firestore
                 await updateDoc(doc(db, "mouses", docId), {
@@ -123,6 +123,7 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
                     tipo: tipo,
                     serial: serial
                 });
+                await logAction(`Mouse con placa ${placa} actualizado`); // Registrar la acción
             } else {
                 // Agregar un nuevo mouse
                 await addDoc(collection(db, "mouses"), {
@@ -131,8 +132,9 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
                     tipo: tipo,
                     serial: serial
                 });
+                await logAction(`Mouse con placa ${placa} agregado`); // Registrar la acción
             }
-
+        
             modal.style.display = "none"; // Cerrar el modal
             this.reset(); // Limpiar el formulario
             loadMouses(); // Recargar la tabla
@@ -141,9 +143,21 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
         async function deleteMouse(docId) {
             if (confirm("¿Estás seguro de que deseas eliminar este mouse?")) {
                 try {
-                    await deleteDoc(doc(db, "mouses", docId)); // Eliminar el documento en Firestore
-                    alert("Mouse eliminado correctamente.");
-                    loadMouses(); // Recargar la lista de mouses
+                    const docRef = doc(db, "mouses", docId);
+                    const docSnap = await getDoc(docRef);
+        
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        const placa = data.placa; // Obtener la placa del mouse
+        
+                        await deleteDoc(docRef); // Eliminar el documento en Firestore
+                        await logAction(`Mouse con placa ${placa} eliminado`); // Registrar la acción
+                        alert("Mouse eliminado correctamente.");
+                        loadMouses(); // Recargar la lista de mouses
+                    } else {
+                        console.error("No se encontró el documento del mouse.");
+                        alert("Error: No se encontró el mouse.");
+                    }
                 } catch (error) {
                     console.error("Error al eliminar mouse:", error);
                     alert("Hubo un error al eliminar el mouse.");
@@ -202,5 +216,24 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
                 document.getElementById("marca").value = ""; // Limpiar la marca
                 document.getElementById("tipo").value = "inalambrico"; // Valor por defecto
                 document.getElementById("serial").value = ""; // Limpiar el serial
+            }
+        }
+
+        async function logAction(action) {
+            const now = new Date(); // Obtener la fecha y hora actual
+            const fecha = now.toLocaleDateString(); // Obtener la fecha
+            const hora = now.toLocaleTimeString(); // Obtener la hora
+        
+            const historialRef = collection(db, "historial"); // Referencia a la colección de historial
+        
+            try {
+                await addDoc(historialRef, {
+                    fecha: fecha,
+                    hora: hora, // Agregar la hora al documento
+                    accion: action
+                });
+                console.log("Acción registrada en el historial:", action);
+            } catch (error) {
+                console.error("Error al registrar la acción en el historial:", error);
             }
         }

@@ -116,12 +116,14 @@ document.getElementById("posapiesForm").onsubmit = async function(event) {
             placa: placa,
             posapies: posapies
         });
+        await logAction(`Posapies con placa ${placa} actualizado`); // Registrar la acción
     } else {
         // Agregar un nuevo posapies
         await addDoc(collection(db, "posapies"), {
             placa: placa,
             posapies: posapies
         });
+        await logAction(`Posapies con placa ${placa} agregado`); // Registrar la acción
     }
 
     modal.style.display = "none"; // Cerrar el modal
@@ -132,9 +134,21 @@ document.getElementById("posapiesForm").onsubmit = async function(event) {
 async function deletePosapies(docId) {
     if (confirm("¿Estás seguro de que deseas eliminar este posapies?")) {
         try {
-            await deleteDoc(doc(db, "posapies", docId)); // Eliminar el documento en Firestore
-            alert("Posapies eliminado correctamente.");
-            loadPosapies(); // Recargar la lista de posapies
+            const docRef = doc(db, "posapies", docId);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                const placa = data.placa; // Obtener la placa del posapies
+
+                await deleteDoc(docRef); // Eliminar el documento en Firestore
+                await logAction(`Posapies con placa ${placa} eliminado`); // Registrar la acción
+                alert("Posapies eliminado correctamente.");
+                loadPosapies(); // Recargar la lista de posapies
+            } else {
+                console.error("No se encontró el documento del posapies.");
+                alert("Error: No se encontró el posapies.");
+            }
         } catch (error) {
             console.error("Error al eliminar posapies:", error);
             alert("Hubo un error al eliminar el posapies.");
@@ -187,3 +201,22 @@ window.onclick = function(event) {
         document.getElementById("posapies").value = ""; // Limpiar el posapies
     }
 }
+
+        async function logAction(action) {
+            const now = new Date(); // Obtener la fecha y hora actual
+            const fecha = now.toLocaleDateString(); // Obtener la fecha
+            const hora = now.toLocaleTimeString(); // Obtener la hora
+        
+            const historialRef = collection(db, "historial"); // Referencia a la colección de historial
+        
+            try {
+                await addDoc(historialRef, {
+                    fecha: fecha,
+                    hora: hora, // Agregar la hora al documento
+                    accion: action
+                });
+                console.log("Acción registrada en el historial:", action);
+            } catch (error) {
+                console.error("Error al registrar la acción en el historial:", error);
+            }
+        }

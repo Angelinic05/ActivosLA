@@ -65,8 +65,6 @@ document.getElementById("logout-button").addEventListener("click", async () => {
 });
 
 
-
-
 async function loadHistorial(userData) {
     const querySnapshot = await getDocs(collection(db, "historial"));
     const tableBody = document.querySelector("tbody");
@@ -77,6 +75,7 @@ async function loadHistorial(userData) {
         const row = `
             <tr>
                 <td>${data.fecha}</td>
+                <td>${data.hora}</td> <!-- Mostrar la hora -->
                 <td>${data.accion}</td>
             </tr>
         `;
