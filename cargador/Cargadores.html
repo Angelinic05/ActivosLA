@@ -41,8 +41,8 @@
                     </li>
                     <li>
                         <a href="../mouse/Mouses.html">
-                            <i class='bx bx-mouse selection'></i>
-                            <span class="link_name  span-selection">Mouses</span>
+                            <i class='bx bx-mouse' ></i>
+                            <span class="link_name sidebar-option">Mouses</span>
                         </a>
                     </li>
                     <li>
@@ -60,13 +60,13 @@
                     <li>
                         <a href="../posapies/Posapies.html">
                             <i class='bx bx-collection' ></i>
-                            <span class="link_name sidebar-option">Posapies</span>
+                            <span class="link_name  sidebar-option">Posapies</span>
                         </a>
                     </li>
                     <li>
                         <a href="../cargador/Cargadores.html">
-                            <i class='bx bxs-battery-charging'></i>
-                            <span class="link_name  sidebar-option">Cargadores</span>
+                            <i class='bx bxs-battery-charging  selection'></i>
+                            <span class="link_name  span-selection">Cargadores</span>
                         </a>
                     </li>
                 </div>
@@ -85,7 +85,6 @@
                     </li>
                 </div>
             </div>
-
             <li>
                 <div class="profile-details">
                     <div class="profile-content">
@@ -105,7 +104,7 @@
     <section class="home-section">
         <div class="home-content">
             <i class="bx bx-menu"></i>
-            
+              
             <div class="encabezado">
                 <h1>ACTIVOS LA</h1>
                 
@@ -115,14 +114,12 @@
             </div> 
         </div>
         <div class="principal">
-            <h1>MOUSES</h1>
+            <h1>CARGADORES</h1> 
             <table>
                 <thead>
                     <tr>
                         <th>PLACA</th>
-                        <th>MARCA</th>
-                        <th>TIPO</th>
-                        <th>SERIAL</th>
+                        <th>MARCA CARGADOR</th>
                         <th>ACCIONES</th>
                     </tr>
                 </thead>
@@ -142,23 +139,14 @@
     <div id="myModal" class="modal">
         <div class="modal-content">
             <span id="closex" class="close">&times;</span>
-            <h2>Agregar/Editar Mouse</h2>
-            <form id="mouseForm">
-                <input type="hidden" id="mouseId" name="mouseId">
+            <h2>Agregar/Editar Posapies</h2>
+            <form id="cargadorForm">
+                <input type="hidden" id="cargadorId" name="cargadorId">
                 <label for="placa">Placa:</label>
                 <input type="text" id="placa" name="placa" required>
                 
-                <label for="marca">Marca:</label>
-                <input type="text" id="marca" name="marca" required>
-                
-                <label for="tipo">Tipo:</label>
-                <select id="tipo" name="tipo" required>
-                    <option value="inalambrico">Inalámbrico</option>
-                    <option value="alambrico">Alámbrico</option>
-                </select>
-                
-                <label for="serial">Serial:</label>
-                <input type="text" id="serial" name="serial" required>
+                <label for="cargador">Marca:</label>
+                <input type="text" id="cargador" name="cargador" required>
                 
                 <button class="custom-btn btn-2" type="submit">Guardar</button>
             </form>
@@ -167,5 +155,6 @@
     <script src="../search.js"></script>
     <script src="../sidebar.js"></script>
     <script type="module" src="script.js"></script>
+    </script>
 </body>
 </html>

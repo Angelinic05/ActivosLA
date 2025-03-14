@@ -76,6 +76,7 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
                 const keyboardData = await getKeyboardData(data.keyboardId); // Obtener datos del teclado
                 const mouseData = await getMouseData(data.mouseId); // Obtener datos del mouse
                 const celularData = await getCelularData(data.celularId); // Obtener datos del celular
+                const cargadorData = await getCargadorData(data.cargadorId); // Obtener datos del celular
                 const baseData = await getBaseData(data.baseId);
                 const posapiesData = await getPosapiesData(data.posapiesId);
                 
@@ -88,6 +89,7 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
                         <td>${keyboardData ? `${keyboardData.placa} ${keyboardData.marca}` : "Ninguno"}</td>
                         <td>${mouseData ? `${mouseData.placa} ${mouseData.marca}` : "Ninguno"}</td>
                         <td>${celularData ? `${celularData.placa} ${celularData.marca} ${celularData.modelo}` : "Ninguno"}</td>
+                        <td>${cargadorData ? `${cargadorData.placa} ${cargadorData.cargador}` : "Ninguno"}</td>
                         <td>${baseData ? `${baseData.placa}` : "Ninguno"}</td>
                         <td>${posapiesData ? `${posapiesData.placa}` : "Ninguno"}</td>
                         <td>
@@ -142,6 +144,13 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
         async function getCelularData(celularId) {
             if (!celularId || celularId === "N/A") return null; // Si no hay ID o es N/A, retornar null
             const docRef = doc(db, "celulares", celularId);
+            const docSnap = await getDoc(docRef);
+            return docSnap.exists() ? docSnap.data() : null; // Retornar los datos del mouse
+        }
+
+        async function getCargadorData(cargadorId) {
+            if (!cargadorId || cargadorId === "N/A") return null; // Si no hay ID o es N/A, retornar null
+            const docRef = doc(db, "cargadores", cargadorId);
             const docSnap = await getDoc(docRef);
             return docSnap.exists() ? docSnap.data() : null; // Retornar los datos del mouse
         }
@@ -322,6 +331,55 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
             });
         }
 
+
+
+
+
+
+
+
+
+
+
+        async function loadCargadores() {
+            const querySnapshot = await getDocs(collection(db, "cargadores"));
+            const cargadorSelect = document.getElementById("cargadorSelect");
+            cargadorSelect.innerHTML = ""; // Limpiar las opciones antes de cargar nuevos datos
+
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "Seleccione un cargador";
+            cargadorSelect.appendChild(defaultOption);
+
+            const naOption = document.createElement("option");
+            naOption.value = "N/A";
+            naOption.textContent = "N/A (No Aplica)";
+            cargadorSelect.appendChild(naOption); // Agregar opción N/A
+
+            const assignedCargadores = new Set(); // Para almacenar los IDs de mouses asignados
+
+            const collaboratorsSnapshot = await getDocs(collection(db, "colaboradores"));
+            collaboratorsSnapshot.forEach((collabDoc) => {
+                const collabData = collabDoc.data();
+                if (collabData.cargadorId && collabData.cargadorId !== "N/A") {
+                    assignedCargadores.add(collabData.cargadorId); // Agregar ID a la lista de asignados
+                }
+            });
+
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                if (!assignedCargadores.has(doc.id)) { // Verificar si el mouse ya está asignado
+                    const option = document.createElement("option");
+                    option.value = doc.id; // ID del mouse
+                    option.textContent = `${data.placa} - ${data.marca} - ${data.modelo}`; // Mostrar placa y marca
+                    cargadorSelect.appendChild(option);
+                }
+            });
+        }
+
+
+
+
         async function loadBases() {
             const querySnapshot = await getDocs(collection(db, "bases"));
             const baseSelect = document.getElementById("baseSelect");
@@ -406,8 +464,10 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
             const keyboardId = document.getElementById("keyboardSelect").value; // Obtener el ID del teclado seleccionado
             const mouseId = document.getElementById("mouseSelect").value; // Obtener el ID del mouse seleccionado
             const celularId = document.getElementById("celularSelect").value; // Obtener el ID del celular seleccionado
+            const cargadorId = document.getElementById("cargadorSelect").value;
             const baseId = document.getElementById("baseSelect").value;
             const posapiesId = document.getElementById("posapiesSelect").value;
+            
         
             if (docId) {
                 // Actualizar el colaborador en Firestore
@@ -420,7 +480,8 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
                     mouseId: mouseId,
                     celularId: celularId,
                     baseId: baseId,
-                    posapiesId: posapiesId
+                    posapiesId: posapiesId,
+                    cargadorId: cargadorId
                 });
                 await logAction(`Colaborador ${fullName} actualizado`); // Registrar la acción en el historial
             } else {
@@ -434,7 +495,8 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
                     mouseId: mouseId,
                     celularId: celularId,
                     baseId: baseId,
-                    posapiesId: posapiesId
+                    posapiesId: posapiesId,
+                    cargadorId: cargadorId
                 });
                 await logAction(`Colaborador ${fullName} agregado`); // Registrar la acción en el historial
             }
@@ -488,6 +550,7 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
             document.getElementById("keyboardSelect").value = data.keyboardId || ""; 
             document.getElementById("mouseSelect").value = data.mouseId || ""; 
             document.getElementById("celularSelect").value = data.celularId || "";
+            document.getElementById("cargadorSelect").value = data.cargadorId || "";
             document.getElementById("baseSelect").value = data.baseId || ""; 
             document.getElementById("posapiesSelect").value = data.posapiesId || ""; 
         }
@@ -500,6 +563,7 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
             loadKeyboards(); 
             loadMouses(); 
             loadCelulares();
+            loadCargadores();
             loadBases();
             loadPosapies(); 
         }
@@ -519,6 +583,7 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
             document.getElementById("keyboardSelect").value = ""; // Limpiar el teclado seleccionado
             document.getElementById("mouseSelect").value = ""; // Limpiar el mouse seleccionado
             document.getElementById("celularSelect").value = "";
+            document.getElementById("cargadorSelect").value = "";
             document.getElementById("baseSelect").value = "";
             document.getElementById("posapiesSelect").value = "";
         }
@@ -534,6 +599,7 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
             document.getElementById("keyboardSelect").value = ""; // Limpiar el teclado seleccionado
             document.getElementById("mouseSelect").value = ""; // Limpiar el mouse seleccionado
             document.getElementById("celularSelect").value = "";
+            document.getElementById("cargadorSelect").value = "";
             document.getElementById("baseSelect").value = "";
             document.getElementById("posapiesSelect").value = "";
         }
@@ -550,6 +616,7 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/fire
                 document.getElementById("keyboardSelect").value = ""; // Limpiar el teclado seleccionado
                 document.getElementById("mouseSelect").value = ""; // Limpiar el mouse seleccionado
                 document.getElementById("celularSelect").value = "";
+                document.getElementById("cargadorSelect").value = "";
                 document.getElementById("baseSelect").value = "";
                 document.getElementById("posapiesSelect").value = "";
             }

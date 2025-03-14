@@ -65,6 +65,12 @@
                             <span class="link_name sidebar-option">Posapies</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="../cargador/Cargadores.html">
+                            <i class='bx bxs-battery-charging'></i>
+                            <span class="link_name  sidebar-option">Cargadores</span>
+                        </a>
+                    </li>
                 </div>
                 <div>
                     <li>
@@ -154,5 +160,18 @@
     <script src="../sidebar.js"></script>
     <script type="module" src="script.js"></script>
     <script src="../action.js"></script>
+    <script>
+        window.onload = function() {
+            const sidebarContainer = document.getElementById('sidebar-container');
+            
+            fetch('sidebar.html')  // Cargar el sidebar desde el archivo sidebar.html
+                .then(response => response.text())
+                .then(data => {
+                    sidebarContainer.innerHTML = data;  // Insertar el contenido del sidebar
+                })
+                .catch(error => console.error('Error al cargar el sidebar:', error));
+        };
+    </script>
+    
 </body>
 </html>

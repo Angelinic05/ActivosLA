@@ -277,7 +277,6 @@ body{
   transition: all 0.5s ease;
 }
 .sidebar.close ~ .home-section {
-
   left: 78px;
   width: calc(100% - 78px);
 }
@@ -752,11 +751,6 @@ button:hover {
         transition: left 0.2s ease;
     }
 
-    .home-section {
-        transition: all 0.5s ease;
-        margin-left: 0; 
-    }
-    
     .sidebar.close ~ .home-section{
         left: 0;
         width:100%;
@@ -767,6 +761,24 @@ button:hover {
       border-radius: 0 0 0 0;
     }
 
+    .home-section {
+      left: 0;
+      width: 100%;  
+    }
+
+    .home-content{
+      position: relative;
+      left: 260px;
+      width: calc(100% - 260px);
+      transition: all 0.5s ease;
+    }
+
+
+
+    .sidebar.close ~ .home-section .home-content{
+      left: 0;
+      width: 100%;
+    }
 
     table{
         font-size: 9px;
@@ -825,13 +837,19 @@ button:hover {
 }
 
 
-@media (max-width: 450px) {
+@media (max-width: 500px) {
 
     .sidebar.close .nav-links li .sub-menu {
       display: none;
     }
 
+    .sidebar ~ .home-section .home-content .encabezado{
+      display: none;
+    }
 
+    .sidebar.close ~ .home-section .home-content .encabezado{
+      display: flex;
+    }
 
       table{
         font-size: 10px;

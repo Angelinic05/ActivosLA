@@ -146,6 +146,7 @@ async function loadPrestamos() {
                 <td>${data.cedula}</td>
                 <td>${data.cargo}</td>
                 <td>${equiposPlacas}</td>
+                <td>${data.descripcion}</td>
                 <td>${fechaDevolucion ? fechaDevolucion.toLocaleDateString() : ''}</td>
                 <td class="estado ${data.estado}">${data.estado}</td> 
                 <td>
@@ -185,6 +186,7 @@ console.log("3")
     const fullName = document.getElementById("fullName").value;
     const idNumber = document.getElementById("idNumber").value;
     const jobTitle = document.getElementById("jobTitle").value;
+    const description = document.getElementById("description").value;
 
     // Obtener los IDs de los equipos seleccionados
     const equipmentIds = Array.from(document.getElementById("equipmentSelect").selectedOptions).map(option => option.value);
@@ -210,7 +212,8 @@ console.log("3")
             cargo: jobTitle,
             equipos: equipmentIds, // Guardar como array
             fechaDevolucion: returnDate,
-            estado: status
+            estado: status,
+            descripcion: description
         });
     } else {
         // Agregar un nuevo préstamo
@@ -221,7 +224,8 @@ console.log("3")
             cargo: jobTitle,
             equipos: equipmentIds, // Guardar como array
             fechaDevolucion: returnDate,
-            estado: status
+            estado: status,
+            descripcion: description
         });
     }
 
@@ -249,6 +253,7 @@ async function deletePrestamo(docId) {
     document.getElementById("fullName").value = data.nombre || "";
     document.getElementById("idNumber").value = data.cedula || "";
     document.getElementById("jobTitle").value = data.cargo || "";
+    document.getElementById("description").value = data.descripcion || "";
 
     // Manejo de la fecha de devolución
     let fechaDevolucion;
